@@ -11,4 +11,4 @@ package repositories
 trait TagRepository[F[_], TagID]:
   def create(name: TagName): F[Tag[TagID]]
   def delete(id: TagID): F[Unit]
-  def findAll(): F[List[Tag[TagID]]]
+  def findAll(): F[Vector[Tag[TagID]]]
