@@ -1,4 +1,0 @@
-[debug] [persistence] Classpath dependencies List(core)
-[debug] [persistence] Dependencies from configurations List()
-[debug] Bloop wrote the configuration of project 'persistence' to '/Users/raphaelkhan/Developer/cryo-compose/.bloop/persistence.json'
-[success] Generated .bloop/persistence.json
