@@ -9145,3 +9145,39 @@ mars 23, 2024 11:33:15 AM scala.meta.internal.pc.CompilerAccess handleError
 SEVERE: A severe compiler error occurred, full details of the error can be found in the error report /Users/raphaelkhan/Developer/cryo-compose/.metals/.reports/metals-full/2024-03-23/r_compiler-error_(core)_11-33-15-929.md
 2024.03.23 11:38:50 INFO  compiling core (1 scala source)
 2024.03.23 11:38:50 INFO  time: compiled core in 76ms
+2024.03.23 14:03:39 INFO  compiling core (1 scala source)
+2024.03.23 14:03:39 INFO  time: compiled core in 0.14s
+mars 23, 2024 2:05:58 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: A severe compiler error occurred, full details of the error can be found in the error report /Users/raphaelkhan/Developer/cryo-compose/.metals/.reports/metals-full/2024-03-23/r_compiler-error_(core)_14-05-58-002.md
+2024.03.23 14:07:17 ERROR Failed to tokenize input for semantic tokens for /Users/raphaelkhan/Developer/cryo-compose/02-core/src/main/scala/com/khanr1/cryocompose/repositories/TagRepository.scala
+scala.meta.tokenizers.TokenizeException: <input>:6: error: unclosed comment
+/**
+^
+	at scala.meta.internal.tokenizers.Reporter.incompleteInputError(Reporter.scala:27)
+	at scala.meta.internal.tokenizers.Reporter.incompleteInputError$(Reporter.scala:26)
+	at scala.meta.internal.tokenizers.Reporter$$anon$1.incompleteInputError(Reporter.scala:33)
+	at scala.meta.internal.tokenizers.Reporter.incompleteInputError(Reporter.scala:29)
+	at scala.meta.internal.tokenizers.Reporter.incompleteInputError$(Reporter.scala:29)
+	at scala.meta.internal.tokenizers.Reporter$$anon$1.incompleteInputError(Reporter.scala:33)
+	at scala.meta.internal.tokenizers.LegacyScanner.skipNestedComments(LegacyScanner.scala:52)
+	at scala.meta.internal.tokenizers.LegacyScanner.skipToCommentEnd(LegacyScanner.scala:70)
+	at scala.meta.internal.tokenizers.LegacyScanner.fetchToken(LegacyScanner.scala:313)
+	at scala.meta.internal.tokenizers.LegacyScanner.nextToken(LegacyScanner.scala:211)
+	at scala.meta.internal.tokenizers.LegacyScanner.foreach(LegacyScanner.scala:1011)
+	at scala.meta.internal.tokenizers.ScalametaTokenizer.uncachedTokenize(ScalametaTokenizer.scala:24)
+	at scala.meta.internal.tokenizers.ScalametaTokenizer.$anonfun$tokenize$1(ScalametaTokenizer.scala:17)
+	at scala.collection.concurrent.TrieMap.getOrElseUpdate(TrieMap.scala:962)
+	at scala.meta.internal.tokenizers.ScalametaTokenizer.tokenize(ScalametaTokenizer.scala:17)
+	at scala.meta.internal.tokenizers.ScalametaTokenizer$$anon$2.apply(ScalametaTokenizer.scala:332)
+	at scala.meta.tokenizers.Api$XtensionTokenizeDialectInput.tokenize(Api.scala:25)
+	at scala.meta.tokenizers.Api$XtensionTokenizeInputLike.tokenize(Api.scala:14)
+	at scala.meta.internal.metals.SemanticTokensProvider$.getTokens(SemanticTokensProvider.scala:28)
+	at scala.meta.internal.metals.SemanticTokensProvider$.provide(SemanticTokensProvider.scala:89)
+	at scala.meta.internal.metals.Compilers.$anonfun$semanticTokens$3(Compilers.scala:541)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:467)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.lang.Thread.run(Thread.java:1623)
+
+2024.03.23 14:07:40 INFO  compiling core (1 scala source)
+2024.03.23 14:07:40 INFO  time: compiled core in 88ms
