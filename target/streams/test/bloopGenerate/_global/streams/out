@@ -1,0 +1,4 @@
+[debug] [cryo-compose-test] Classpath dependencies List()
+[debug] [cryo-compose-test] Dependencies from configurations List(cryo-compose)
+[debug] Bloop wrote the configuration of project 'cryo-compose-test' to '/Users/raphaelkhan/Developer/cryo-compose/.bloop/cryo-compose-test.json'
+[success] Generated .bloop/cryo-compose-test.json

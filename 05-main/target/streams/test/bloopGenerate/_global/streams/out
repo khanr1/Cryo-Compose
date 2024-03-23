@@ -1,0 +1,4 @@
+[debug] [main-test] Classpath dependencies List(delivery-test, core-test)
+[debug] [main-test] Dependencies from configurations List(main)
+[debug] Bloop wrote the configuration of project 'main-test' to '/Users/raphaelkhan/Developer/cryo-compose/.bloop/main-test.json'
+[success] Generated .bloop/main-test.json

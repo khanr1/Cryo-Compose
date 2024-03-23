@@ -1,0 +1,4 @@
+[debug] [delivery] Classpath dependencies List(core)
+[debug] [delivery] Dependencies from configurations List()
+[debug] Bloop wrote the configuration of project 'delivery' to '/Users/raphaelkhan/Developer/cryo-compose/.bloop/delivery.json'
+[success] Generated .bloop/delivery.json

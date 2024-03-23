@@ -1,0 +1,15 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /Users/raphaelkhan/Developer/cryo-compose/05-main/target/scala-3.3.3/main_3-0.0.1-SNAPSHOT.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/raphaelkhan/Developer/cryo-compose/05-main/target/scala-3.3.3/classes/com[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/khanr1[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/raphaelkhan/Developer/cryo-compose/05-main/target/scala-3.3.3/classes/com/khanr1[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/khanr1/cryocompose[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/raphaelkhan/Developer/cryo-compose/05-main/target/scala-3.3.3/classes/com/khanr1/cryocompose[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/khanr1/cryocompose/Main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/raphaelkhan/Developer/cryo-compose/05-main/target/scala-3.3.3/classes/com/khanr1/cryocompose/Main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/khanr1/cryocompose/Main.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/raphaelkhan/Developer/cryo-compose/05-main/target/scala-3.3.3/classes/com/khanr1/cryocompose/Main.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/khanr1/cryocompose/Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/raphaelkhan/Developer/cryo-compose/05-main/target/scala-3.3.3/classes/com/khanr1/cryocompose/Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m

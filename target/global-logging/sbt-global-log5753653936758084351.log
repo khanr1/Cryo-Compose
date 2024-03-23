@@ -1,0 +1,23 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(test, Some(fcafd463-4600-43b7-a948-51412efeef50), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: core / Test / test, main / Test / test, delivery / Test / test, domain / Test / test, persistence / Test / test, Test / test[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 14 Scala sources to /Users/raphaelkhan/Developer/cryo-compose/01-domain/target/scala-3.3.3/classes ...[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 4 Scala sources to /Users/raphaelkhan/Developer/cryo-compose/01-domain/target/scala-3.3.3/test-classes ...[0m
+[0m[[0m[33mwarn[0m] [0m[0mthere was 1 deprecation warning; re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mcom.khanr1.cryocompose.wiring.WiringSuite[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mcom.khanr1.cryocompose.ExampleSuite[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m+ [0mmake sure IO computes the right result.. [37m[1m8ms[0m[0m
+[0m[[0m[0minfo[0m] [0m[0mPassed: Total 1, Failed 0, Errors 0, Passed 1[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mcom.khanr1.cryocompose.BasicSuite[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m+ [0mThe ProductName construtor works properly [37m[1m102ms[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m+ [0mThe ProductCode constructor works properly [37m[1m101ms[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m+ [0mThe ProductDescription constructor works properly [37m[1m105ms[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m+ [0mThe CategoryName constructor works properly [37m[1m99ms[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m+ [0mThe CategoryDescription constructor works properly [37m[1m99ms[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m+ [0mThe TagName constructor works properly [37m[1m106ms[0m[0m
+[0m[[0m[0minfo[0m] [0m[0mPassed: Total 6, Failed 0, Errors 0, Passed 6[0m
+[0m[[0m[32msuccess[0m] [0m[0mTotal time: 8 s, completed 21 mars 2024, 22:34:12[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0mForcing garbage collection...[0m
+[0m[[0m[0minfo[0m] [0m[0mshutting down sbt server[0m

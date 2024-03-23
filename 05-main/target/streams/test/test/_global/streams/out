@@ -1,0 +1,7 @@
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(com.khanr1.cryocompose.ExampleSuite, weaver.framework.WeaverFingerprints$SuiteFingerprint$@6e57305f, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mcom.khanr1.cryocompose.ExampleSuite[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m+ [0mmake sure IO computes the right result.. [37m[1m8ms[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mSummary for weaver-cats-effect not available.[0m
+[0m[[0m[0minfo[0m] [0m[0mPassed: Total 1, Failed 0, Errors 0, Passed 1[0m
+[0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com.khanr1.cryocompose.ExampleSuite[0m

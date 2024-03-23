@@ -1,0 +1,53 @@
+[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = /Users/raphaelkhan/Developer/cryo-compose/01-domain/target/scala-3.3.3/test-classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringSuite.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WiringGen$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite$.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	BasicSuite.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Gen$package.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: /Users/raphaelkhan/Developer/cryo-compose/01-domain/target/scala-3.3.3/test-classes.bak[0m
