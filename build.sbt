@@ -63,6 +63,13 @@ lazy val delivery =
   project
     .in(file("04-delivery"))
     .dependsOn(core % Cctt)
+    .settings(
+      libraryDependencies ++= Seq(
+        Library.htt4sCirce,
+        Library.htt4sDsl,
+        Library.htt4sEmberServer,
+      )
+    )
 
 //Entry point of the application.
 

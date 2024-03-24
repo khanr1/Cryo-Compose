@@ -11,7 +11,7 @@ object Dependencies {
     val weaver = "0.8.4"
     val circe = "0.14.6"
     val squants = "1.8.3"
-
+    val http4s = "0.23.26"
   }
   object Library {
     val cats = "org.typelevel" %% "cats-core" % Version.cats
@@ -27,6 +27,10 @@ object Dependencies {
     val skunkCirce = "org.tpolecat" %% "skunk-circe" % Version.skunk
     val squants = "org.typelevel" %% "squants" % Version.squants
     val skunkCore = "org.tpolecat" %% "skunk-core" % Version.skunk
+    val htt4sDsl = "org.http4s" %% "http4s-dsl" % Version.http4s
+    val htt4sCirce = "org.http4s" %% "http4s-circe" % Version.http4s
+    val htt4sEmberServer =
+      "org.http4s" %% "http4s-ember-server" % Version.http4s
 
     // Testing library
     val weaverCats = "com.disneystreaming" %% "weaver-cats" % Version.weaver
