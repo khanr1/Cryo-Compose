@@ -50,18 +50,18 @@ lazy val core =
       )
     )
 
-//Make sure to translate request model (web request; CLI) into something our core can understand.
-
-lazy val delivery =
-  project
-    .in(file("03-delivery"))
-    .dependsOn(core % Cctt)
-
 //How our data are stored
 
 lazy val persistence =
   project
-    .in(file("04-persistence"))
+    .in(file("03-persistence"))
+    .dependsOn(core % Cctt)
+
+//Make sure to translate request model (web request; CLI) into something our core can understand.
+
+lazy val delivery =
+  project
+    .in(file("04-delivery"))
     .dependsOn(core % Cctt)
 
 //Entry point of the application.

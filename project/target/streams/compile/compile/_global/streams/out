@@ -1,7 +1,0 @@
-[error] /Users/raphaelkhan/Developer/cryo-compose/project/Dependencies.scala:32:5: illegal start of simple pattern
-[error]     val weaverCats = "com.disneystreaming" %% "weaver-cats" % Version.weaver
-[error]     ^
-[error] /Users/raphaelkhan/Developer/cryo-compose/project/Dependencies.scala:33:1: '=' expected.
-[error]     val weaverDiscipline =
-[error] ^
-[error] two errors found
