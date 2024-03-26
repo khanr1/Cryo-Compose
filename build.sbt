@@ -68,6 +68,11 @@ lazy val delivery =
         Library.htt4sCirce,
         Library.htt4sDsl,
         Library.htt4sEmberServer,
+        Library.ironCirce,
+        Library.circe,
+        Library.circeGeneric,
+        Library.circeParser,
+        Library.htt4sCirce,
       )
     )
 

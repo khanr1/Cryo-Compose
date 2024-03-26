@@ -9,14 +9,19 @@ object Dependencies {
     val monocle = "3.2.0"
     val skunk = "0.6.3"
     val weaver = "0.8.4"
-    val circe = "0.14.6"
+    val circe = "0.14.5"
     val squants = "1.8.3"
     val http4s = "0.23.26"
   }
   object Library {
+
     val cats = "org.typelevel" %% "cats-core" % Version.cats
     val catsEffect = "org.typelevel" %% "cats-effect" % Version.catsEffect
     val circe = "io.circe" %% "circe-core" % Version.circe
+    val circeGeneric = "io.circe" %% "circe-generic" % Version.circe
+    val circeParser = "io.circe" %% "circe-parser" % Version.circe
+    val htt4sCirce = "org.http4s" %% "http4s-circe" % Version.http4s
+    val htt4sDsl = "org.http4s" %% "http4s-dsl" % Version.http4s
     val iron = "io.github.iltotore" %% "iron" % Version.iron
     val ironCat = "io.github.iltotore" %% "iron-cats" % Version.iron
     val ironCirce = "io.github.iltotore" %% "iron-circe" % Version.iron
@@ -25,10 +30,8 @@ object Dependencies {
     val kitten = "org.typelevel" %% "kittens" % Version.kitten
     val monocle = "dev.optics" %% "monocle-core" % Version.monocle
     val skunkCirce = "org.tpolecat" %% "skunk-circe" % Version.skunk
-    val squants = "org.typelevel" %% "squants" % Version.squants
     val skunkCore = "org.tpolecat" %% "skunk-core" % Version.skunk
-    val htt4sDsl = "org.http4s" %% "http4s-dsl" % Version.http4s
-    val htt4sCirce = "org.http4s" %% "http4s-circe" % Version.http4s
+    val squants = "org.typelevel" %% "squants" % Version.squants
     val htt4sEmberServer =
       "org.http4s" %% "http4s-ember-server" % Version.http4s
 
