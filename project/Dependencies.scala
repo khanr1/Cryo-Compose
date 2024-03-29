@@ -12,6 +12,7 @@ object Dependencies {
     val circe = "0.14.5"
     val squants = "1.8.3"
     val http4s = "0.23.26"
+    val log4cats = "2.6.0"
   }
   object Library {
 
@@ -25,6 +26,8 @@ object Dependencies {
     val iron = "io.github.iltotore" %% "iron" % Version.iron
     val ironCat = "io.github.iltotore" %% "iron-cats" % Version.iron
     val ironCirce = "io.github.iltotore" %% "iron-circe" % Version.iron
+    val log4cats = "org.typelevel" %% "log4cats-core" % Version.log4cats
+    val log4catslf4j = "org.typelevel" %% "log4cats-slf4j" % Version.log4cats
     val ironScalaC = "io.github.iltotore" %% "iron-scalacheck" % Version.iron
     val ironSkunk = "io.github.iltotore" %% "iron-skunk" % Version.iron
     val kitten = "org.typelevel" %% "kittens" % Version.kitten

@@ -82,7 +82,13 @@ lazy val main =
   project
     .in(file("05-main"))
     .dependsOn(delivery % Cctt)
-    .dependsOn(core % Cctt)
+    .dependsOn(persistence % Cctt)
+    .settings(
+      libraryDependencies ++= Seq(
+        Library.log4cats,
+        Library.log4catslf4j,
+      )
+    )
     .settings(testDependencies)
 
 //Some aliases
