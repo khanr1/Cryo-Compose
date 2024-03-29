@@ -31,7 +31,7 @@ object TagInMemoryRepository:
             MonadThrow[F]
               .raiseError(
                 throw new java.lang.RuntimeException(
-                  s"Failed to delete todo: ${id} because it didn't exist."
+                  s"Failed to delete Tag with id ${id} because it didn't exist."
                 )
               )
 
