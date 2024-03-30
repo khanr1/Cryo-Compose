@@ -44,5 +44,5 @@ object TagInMemoryRepositorySuite extends SimpleIOSuite with Checkers:
       maybeError <- repo.delete(2).attempt
     yield
       val message = maybeError.left.map(x => x.getMessage())
-      expect(message === Left("Failed to delete todo: 2 because it didn't exist."))
+      expect(message === Left("Failed to delete Tag with id 2 because it didn't exist."))
   }

@@ -18,11 +18,18 @@ object Dependencies {
 
     val cats = "org.typelevel" %% "cats-core" % Version.cats
     val catsEffect = "org.typelevel" %% "cats-effect" % Version.catsEffect
+
     val circe = "io.circe" %% "circe-core" % Version.circe
     val circeGeneric = "io.circe" %% "circe-generic" % Version.circe
     val circeParser = "io.circe" %% "circe-parser" % Version.circe
+
     val htt4sCirce = "org.http4s" %% "http4s-circe" % Version.http4s
     val htt4sDsl = "org.http4s" %% "http4s-dsl" % Version.http4s
+    val htt4sEmberServer =
+      "org.http4s" %% "http4s-ember-server" % Version.http4s
+    val htt4sEmberClient =
+      "org.http4s" %% "http4s-ember-client" % Version.http4s
+
     val iron = "io.github.iltotore" %% "iron" % Version.iron
     val ironCat = "io.github.iltotore" %% "iron-cats" % Version.iron
     val ironCirce = "io.github.iltotore" %% "iron-circe" % Version.iron
@@ -35,8 +42,6 @@ object Dependencies {
     val skunkCirce = "org.tpolecat" %% "skunk-circe" % Version.skunk
     val skunkCore = "org.tpolecat" %% "skunk-core" % Version.skunk
     val squants = "org.typelevel" %% "squants" % Version.squants
-    val htt4sEmberServer =
-      "org.http4s" %% "http4s-ember-server" % Version.http4s
 
     // Testing library
     val weaverCats = "com.disneystreaming" %% "weaver-cats" % Version.weaver
