@@ -4,7 +4,7 @@ package cryocompose
 import com.khanr1.cryocompose.modules.TagDependencyGraph
 import cats.effect.*
 import cats.implicits.*
-import com.khanr1.cryocompose.controllers.TagController
+import com.khanr1.cryocompose.controllers.inMemory.TagController
 import io.github.iltotore.iron.autoRefine
 import org.typelevel.log4cats.Logger
 

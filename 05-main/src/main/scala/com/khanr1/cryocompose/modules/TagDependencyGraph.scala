@@ -8,7 +8,7 @@ import cats.effect.kernel.Ref
 import cats.MonadThrow
 import com.khanr1.cryocompose.repositories.inMemory.TagInMemoryRepository
 import controllers.Controller
-import controllers.TagController
+import controllers.inMemory.TagController
 import cryocompose.services.TagService
 
 object TagDependencyGraph:
