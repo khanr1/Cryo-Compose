@@ -4,35 +4,68 @@ package controllers
 
 import cats.effect.{ IO, Ref }
 import cats.effect.unsafe.implicits.global
-import inMemory.TagController
-import io.github.iltotore.iron.autoRefine
-import org.http4s.*
-import org.http4s.Method.*
-import org.http4s.syntax.literals.*
-import org.http4s.client.dsl.io.*
-import org.scalacheck.Gen
+import cats.Show
+
+import inMemory.{ request, TagController }
+import response.Tag.given
 import services.TagService
+import suite.HttpSuite
+
+import io.circe.syntax.*
+import io.circe.*
+
+import io.github.iltotore.iron.autoRefine
+import io.github.iltotore.iron.circe.given
+
+import org.http4s.*
+import org.http4s.client.dsl.io.*
+import org.http4s.syntax.literals.*
+import org.http4s.circe.*
+
+import org.scalacheck.Gen
+
 import weaver.*
 import weaver.scalacheck.*
-import suite.HttpSuite
-import io.github.iltotore.iron.circe.given
-import cats.Show
 
 object TagControllerSuite extends HttpSuite:
   given Show[Tag[Int]] = Show.fromToString
-  def tagServicesTest(tags: Vector[Tag[Int]]): TestTagServices =
-    new TestTagServices:
-      override def findAllTag: IO[Vector[Tag[Int]]] = IO.pure(tags)
 
   test("GET all tags succeeds") {
+    // test Tag service
+    def tagServicesTest(tags: Vector[Tag[Int]]): TestTagServices =
+      new TestTagServices:
+        override def findAllTag: IO[Vector[Tag[Int]]] = IO.pure(tags)
+
     forall(Gen.listOf(tagGen[Int]))(tags =>
       val bodyRes = tags.map(response.Tag[Int](_)).toVector
-      val req = GET(uri"/tags")
+      val req = Method.GET(uri"/tags")
       val routes = TagController.make[IO, Int](tagServicesTest(tags.toVector)).routes
       expectHttpBodyAndStatus(routes, req)(bodyRes, Status.Ok)
     )
   }
+  test("POST create a Tag") {
+    // The following line are needed to test the POST method.
+    given Encoder[TagName] = Encoder.forProduct1("name")(t => TagName.toString())
+    given EntityEncoder[F, TagName] = jsonEncoderOf
+    /** Fake Tag Service to test  the createTag method
+      *
+      * @param tag a Tag[Int]
+      * @return a new TestTagService
+      */
+    def tagServiceTest(tag: Tag[Int]): TestTagServices = new TestTagServices:
+      override def createTag(name: TagName): IO[Tag[Int]] = IO.pure(tag)
 
+    forall(tagGen[Int]) { t =>
+      val input = t.name // request.Tag.Create(t.name)
+      val req = Method.POST(input, uri"/tags")
+      val routes = TagController.make(tagServiceTest(t)).routes
+      val expected = response.Tag[Int](t).asJson
+      expectHttpBodyAndStatus(routes, req)(expected, Status.Created)
+    }
+  }
+
+/** TestTagService give the bluepring to build testing services for the Tag entity.
+  */
 protected class TestTagServices extends TagService[IO, Int]:
   override def createTag(name: TagName): IO[Tag[Int]] = ???
 

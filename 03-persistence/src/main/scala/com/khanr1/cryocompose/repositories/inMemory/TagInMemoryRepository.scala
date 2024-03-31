@@ -17,7 +17,7 @@ object TagInMemoryRepository:
   def make[F[_]: MonadThrow](state: Ref[F, Vector[Tag[Int]]]): TagRepository[F, Int] =
     type TagID = Int
     new TagRepository[F, TagID]:
-      private val nextInt: F[Int] = state.get.map(_.size)
+      private val nextInt: F[Int] = state.get.map(_.size + 1)
 
       override def create(name: TagName): F[Tag[TagID]] =
         nextInt

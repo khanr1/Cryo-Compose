@@ -120,3 +120,5 @@ object request:
           _.toEither.leftMap(x => x.mkString_("\n"))
         )
       given entityDecoder[F[_]: cats.effect.Concurrent]: EntityDecoder[F, Create] = jsonOf
+      given Encoder[Create] = Encoder.forProduct1("name")(n => n.name)
+      given entityEncoder[F[_]: cats.effect.Concurrent]: EntityEncoder[F, Create] = jsonEncoderOf
