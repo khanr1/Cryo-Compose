@@ -29,6 +29,8 @@ import weaver.scalacheck.*
 
 object TagControllerSuite extends HttpSuite:
   given Show[Tag[Int]] = Show.fromToString
+  given Encoder[TagName] = Encoder.forProduct1("name")(t => TagName.toString())
+  given EntityEncoder[F, TagName] = jsonEncoderOf
 
   test("GET all tags succeeds") {
     // test Tag service
@@ -43,10 +45,8 @@ object TagControllerSuite extends HttpSuite:
       expectHttpBodyAndStatus(routes, req)(bodyRes, Status.Ok)
     )
   }
-  test("POST create a Tag") {
-    // The following line are needed to test the POST method.
-    given Encoder[TagName] = Encoder.forProduct1("name")(t => TagName.toString())
-    given EntityEncoder[F, TagName] = jsonEncoderOf
+  test("POST Tag succeeds") {
+
     /** Fake Tag Service to test  the createTag method
       *
       * @param tag a Tag[Int]
@@ -62,6 +62,16 @@ object TagControllerSuite extends HttpSuite:
       val expected = response.Tag[Int](t).asJson
       expectHttpBodyAndStatus(routes, req)(expected, Status.Created)
     }
+  }
+  test("POST Tag with empty name failed") {
+    def tagServiceTest: TestTagServices = new TestTagServices:
+      override def createTag(name: TagName): IO[Tag[Int]] = IO.pure(Tag(1, name))
+
+    val input = "\"name\":\"\""
+    val route = TagController.make(tagServiceTest).routes
+    val req = Method.POST(input, uri"/tags")
+    val expected = Status.BadRequest
+    expectStatus(route, req)(expected)
   }
 
 /** TestTagService give the bluepring to build testing services for the Tag entity.
