@@ -20,6 +20,21 @@ final case class Category[CategoryID](
   parent: Option[CategoryID] = None,
 ) extends HasHierarchy[CategoryID]
 
+/** CategoryParam is used to create a category
+  *
+  * @param name
+  *   name for the Category
+  * @param description
+  *   description ofthe category
+  * @param parent
+  *   parent if the category is a subcategory
+  */
+final case class CategoryParam[CategoryID](
+  name: CategoryName,
+  description: CategoryDescription,
+  parent: Option[CategoryID] = None,
+)
+
 type CategoryNameR = DescribedAs[Not[Empty], "The name of a category cannot be an empty"]
 opaque type CategoryName = String :| CategoryNameR
 object CategoryName extends RefinedTypeOps[String, CategoryNameR, CategoryName]
