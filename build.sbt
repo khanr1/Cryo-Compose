@@ -63,6 +63,19 @@ lazy val delivery =
   project
     .in(file("04-delivery"))
     .dependsOn(core % Cctt)
+    .settings(
+      libraryDependencies ++= Seq(
+        Library.htt4sCirce,
+        Library.htt4sDsl,
+        Library.htt4sEmberServer,
+        Library.htt4sEmberClient,
+        Library.ironCirce,
+        Library.circe,
+        Library.circeGeneric,
+        Library.circeParser,
+        Library.htt4sCirce,
+      )
+    )
 
 //Entry point of the application.
 
@@ -70,7 +83,13 @@ lazy val main =
   project
     .in(file("05-main"))
     .dependsOn(delivery % Cctt)
-    .dependsOn(core % Cctt)
+    .dependsOn(persistence % Cctt)
+    .settings(
+      libraryDependencies ++= Seq(
+        Library.log4cats,
+        Library.log4catslf4j,
+      )
+    )
     .settings(testDependencies)
 
 //Some aliases

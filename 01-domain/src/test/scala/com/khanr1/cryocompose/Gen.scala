@@ -28,6 +28,11 @@ val categoryDescriptionGen: Gen[CategoryDescription] =
 val tagNameGen: Gen[TagName] =
   nonEmptyStringGen.map(TagName.applyUnsafe(_))
 
+def tagGen[A: Arbitrary]: Gen[Tag[A]] = for
+  id <- Arbitrary.arbitrary[A]
+  name <- tagNameGen
+yield Tag[A](id, name)
+
 def categoryGen[A: Arbitrary]: Gen[Category[A]] = for
   a <- Arbitrary.arbitrary[A]
   name <- categoryNameGen
