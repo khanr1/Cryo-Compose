@@ -9,8 +9,6 @@ import scala.util.chaining.*
 
 import org.http4s.*
 import org.http4s.circe.*
-import org.http4s.dsl.Http4sDsl
-import org.http4s.server.Router
 
 import response.Tag.given
 
@@ -19,8 +17,6 @@ import cats.data.*
 
 import io.circe.*
 import io.circe.syntax.*
-
-//import io.github.iltotore.iron.circe.given
 
 object TagController:
   def make[F[_]: effect.Async, TagID](

@@ -3,11 +3,11 @@ package cryocompose
 
 import cats.effect.*
 import cats.implicits.*
-import org.http4s.ember.server.EmberServerBuilder
-import org.http4s.*
-import org.http4s.server.Server
-import org.http4s.server.defaults.Banner
 import com.comcast.ip4s.*
+import org.http4s.*
+import org.http4s.ember.server.EmberServerBuilder
+import org.http4s.server.defaults.Banner
+import org.http4s.server.Server
 import org.typelevel.log4cats.Logger
 
 trait HttpServer[F[_]]:
