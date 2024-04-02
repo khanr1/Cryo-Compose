@@ -2,6 +2,8 @@ package com.khanr1
 package cryocompose
 package services
 
+import com.khanr1.cryocompose.repositories.CategoryRepository
+
 trait CategoryService[F[_], CategoryID]:
   /** Finds the category by its name
     *
@@ -50,3 +52,28 @@ trait CategoryService[F[_], CategoryID]:
     * @return
     */
   def updateCategory(category: Category[CategoryID]): F[CategoryID]
+
+object CategoryService:
+  def make[F[_], CategoryID](repo: CategoryRepository[F, CategoryID])
+    : CategoryService[F, CategoryID] =
+    new CategoryService[F, CategoryID]:
+      override def findChildren(id: CategoryID): F[Vector[Category[CategoryID]]] =
+        repo.readChildren(id)
+
+      override def findAncetors(id: CategoryID): F[Vector[Category[CategoryID]]] =
+        repo.readAncestors(id)
+
+      override def findByID(id: CategoryID): F[Option[Category[CategoryID]]] = repo.readByID(id)
+
+      override def createCategory(category: CategoryParam[CategoryID]): F[CategoryID] =
+        repo.create(category)
+
+      override def findRoot: F[Vector[Category[CategoryID]]] = repo.readRoots
+
+      override def findByName(name: CategoryName): F[Option[Category[CategoryID]]] =
+        repo.readByName(name)
+
+      override def updateCategory(category: Category[CategoryID]): F[CategoryID] =
+        repo.update(category)
+
+      override def deleteCatgory(id: CategoryID): F[Unit] = repo.delete(id)
