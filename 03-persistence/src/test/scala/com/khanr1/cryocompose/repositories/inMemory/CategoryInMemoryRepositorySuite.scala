@@ -38,3 +38,20 @@ object CategoryInMemoryRepositorySuite extends SimpleIOSuite with Checkers:
       ancestors.map(_.id) == Vector(1, 5)
     )
   }
+  test("Find Ancestors succeds") {
+    for
+      repo <- createTestRepository(testCategory)
+      ancestors <- repo.readAncestors(3)
+    yield expect(
+      ancestors.map(_.id) == Vector(2, 1)
+    )
+  }
+  test("Delete succeds") {
+    for
+      repo <- createTestRepository(testCategory)
+      _ <- repo.delete(3)
+      categories <- repo.readAll()
+    yield expect(
+      categories.map(_.id) == Vector(1, 2, 4, 5)
+    )
+  }
