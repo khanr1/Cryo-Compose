@@ -21,6 +21,9 @@ object CategoryInMemoryRepositorySuite extends SimpleIOSuite with Checkers:
     Category(4, CategoryName("DC Lines"), CategoryDescription(" DC wirings"), Some(1)),
     Category(5, CategoryName("System"), CategoryDescription("System"), None),
   )
+  val testCategory2: Vector[Category[Int]] = Vector(
+    Category(5, CategoryName("System"), CategoryDescription("System"), None)
+  )
 
   test("Find Children succeds") {
     for
@@ -53,5 +56,22 @@ object CategoryInMemoryRepositorySuite extends SimpleIOSuite with Checkers:
       categories <- repo.readAll()
     yield expect(
       categories.map(_.id) == Vector(1, 2, 4, 5)
+    )
+  }
+  test("Create Success") {
+    for
+      repo <- createTestRepository(testCategory)
+      i <- repo.create(CategoryParam(CategoryName("test"), CategoryDescription("test"), Some(1)))
+      all <- repo.readAll()
+    yield expect(all.size == 6)
+  }
+
+  test("Update Success") {
+    for
+      repo <- createTestRepository(testCategory2)
+      _ <- repo.update(Category(5, CategoryName("test"), CategoryDescription("test"), Some(3)))
+      all <- repo.readAll()
+    yield expect(
+      all.map(_.parent).contains(Some(3))
     )
   }

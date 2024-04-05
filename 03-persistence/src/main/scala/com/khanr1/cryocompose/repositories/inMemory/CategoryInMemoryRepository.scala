@@ -36,7 +36,7 @@ object CategoryInMemoryRepository:
 
       override def delete(id: Int): F[Unit] = state.get.flatMap { categories =>
         if categories.exists(category => category.id === id) then
-          state.update(x => x.filterNot(_.id === id))
+          state.update(x => x.filterNot(_.id == id))
         else
           MonadThrow[F]
             .raiseError(
@@ -50,7 +50,11 @@ object CategoryInMemoryRepository:
       override def readByID(id: Int): F[Option[Category[Int]]] =
         state.get.map(x => x.find(_.id == id))
 
-      override def create(category: CategoryParam[Int]): F[Int] = ???
+      override def create(category: CategoryParam[Int]): F[Int] = nextInt
+        .map(
+          Category(_, category.name, category.description, category.parent)
+        )
+        .flatMap(category => state.modify(s => (s :+ category) -> category.id))
 
       override def readRoots: F[Vector[Category[Int]]] =
         state.get.map(categories => categories.filter(_.parent == None))
@@ -58,6 +62,17 @@ object CategoryInMemoryRepository:
       override def readByName(name: CategoryName): F[Option[Category[Int]]] =
         state.get.map(x => x.find(_.name == name))
 
-      override def update(category: Category[Int]): F[Int] = ???
+      override def update(category: Category[Int]): F[Int] = state
+        .get
+        .flatMap(s =>
+          if s.exists(_.id == category.id) then
+            state.modify(s => (s.filterNot(_.id == category.id) :+ category) -> category.id)
+          else
+            MonadThrow[F].raiseError(
+              throw new java.lang.RuntimeException(
+                s"Failed to update category id ${0}  it doesn't exist."
+              )
+            )
+        )
 
       override def readAll(): F[Vector[Category[Int]]] = state.get
