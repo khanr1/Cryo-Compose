@@ -3,7 +3,6 @@ package cryocompose
 package response
 
 import io.circe.*
-import io.github.iltotore.iron.circe.given
 
 import org.http4s.*
 import org.http4s.circe.*

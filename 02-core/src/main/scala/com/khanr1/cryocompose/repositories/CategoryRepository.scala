@@ -21,4 +21,4 @@ trait CategoryRepository[F[_], CategoryID]:
   def delete(id: CategoryID): F[Unit]
   // update a category
   def update(category: Category[CategoryID]): F[CategoryID]
-  def readAll(): F[Vector[Category[Int]]]
+  def readAll(): F[Vector[Category[CategoryID]]]

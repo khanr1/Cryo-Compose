@@ -34,6 +34,8 @@ trait CategoryService[F[_], CategoryID]:
     * @return
     */
   def findAncetors(id: CategoryID): F[Vector[Category[CategoryID]]]
+
+  def findAll: F[Vector[Category[CategoryID]]]
   /** Create a category
     *
     * @param category
@@ -77,3 +79,4 @@ object CategoryService:
         repo.update(category)
 
       override def deleteCatgory(id: CategoryID): F[Unit] = repo.delete(id)
+      override def findAll: F[Vector[Category[CategoryID]]] = repo.readAll()
