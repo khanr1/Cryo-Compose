@@ -36,3 +36,8 @@ object Parse:
             cause,
           )
         }
+  given parseStringToOptionA[A](
+    using
+    p: Parse[String, A]
+  ): Parse[String, Option[A]] =
+    s => if s.isEmpty() then None.asRight[Throwable] else p(s).map(Some(_))
