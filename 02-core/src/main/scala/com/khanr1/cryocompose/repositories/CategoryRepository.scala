@@ -16,7 +16,7 @@ trait CategoryRepository[F[_], CategoryID]:
   // find the ancestor
   def readAncestors(id: CategoryID): F[Vector[Category[CategoryID]]]
   // create a category
-  def create(category: CategoryParam[CategoryID]): F[CategoryID]
+  def create(category: CategoryParam[CategoryID]): F[Category[CategoryID]]
   // delete a category
   def delete(id: CategoryID): F[Unit]
   // update a category

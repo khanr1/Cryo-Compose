@@ -17,7 +17,7 @@ object CategoryInMemoryRepository:
           .get
           .map(x =>
             if x.isEmpty then 1
-            else x.map(t => t.id).max
+            else x.map(t => t.id).max + 1
           )
       override def readChildren(id: Int): F[Vector[Category[Int]]] =
         state.get.map(categories => categories.filter(_.parent == Some(id)))
@@ -50,11 +50,11 @@ object CategoryInMemoryRepository:
       override def readByID(id: Int): F[Option[Category[Int]]] =
         state.get.map(x => x.find(_.id == id))
 
-      override def create(category: CategoryParam[Int]): F[Int] = nextInt
+      override def create(category: CategoryParam[Int]): F[Category[Int]] = nextInt
         .map(
           Category(_, category.name, category.description, category.parent)
         )
-        .flatMap(category => state.modify(s => (s :+ category) -> category.id))
+        .flatMap(category => state.modify(s => (s :+ category) -> category))
 
       override def readRoots: F[Vector[Category[Int]]] =
         state.get.map(categories => categories.filter(_.parent == None))

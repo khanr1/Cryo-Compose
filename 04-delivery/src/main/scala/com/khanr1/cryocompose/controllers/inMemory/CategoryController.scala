@@ -10,9 +10,12 @@ import com.khanr1.cryocompose.helpers.Parse
 import org.http4s.*
 import org.http4s.circe.*
 
+import cryocompose.request.Category.{ *, given }
+
 import cats.*
 import io.circe.syntax.*
-import io.github.iltotore.iron.constraint.any.Not
+import io.github.iltotore.iron.*
+import io.circe.DecodingFailure
 
 object CategoryController:
   def make[F[_]: effect.Async, CategoryID](
@@ -27,11 +30,23 @@ object CategoryController:
         case GET -> Root => searchAllCategories
         case GET -> Root / "roots" => searchRoots
         case GET -> Root / "children" / id => searchChildren(id)
+        case GET -> Root / id => searchById(id)
+
+        case DELETE -> Root / id => delete(id)
+
+        case r @ POST -> Root =>
+          r.as[cryocompose.request.Category.Create[CategoryID]]
+            .flatMap(x => create(x))
+            .handleErrorWith(e => displayDecodeError(e))
+
       }
       override def routes: HttpRoutes[F] = Router(
         prefixPath -> httpRoutes
       )
-
+      /** Search all the categories
+        *
+        * @return
+        */
       private def searchAllCategories =
         categoryService
           .findAll
@@ -41,6 +56,10 @@ object CategoryController:
               .asJson
               .pipe(Ok(_))
           )
+        /** Search for all the roots categories. Root categories are categories that have no parent
+          *
+          * @return
+          */
       private def searchRoots =
         categoryService
           .findRoot
@@ -50,7 +69,6 @@ object CategoryController:
               .asJson
               .pipe(Ok(_))
           )
-
       private def searchChildren(id: String): F[Response[F]] =
         parse(id).fold(
           t => BadGateway(t.getMessage()),
@@ -64,3 +82,41 @@ object CategoryController:
                   .pipe(Ok(_))
               ),
         )
+      private def searchById(id: String) =
+        parse(id).fold(
+          t => BadRequest(t.getMessage()),
+          id =>
+            categoryService
+              .findByID(id)
+              .flatMap(maybeCategory =>
+                maybeCategory
+                  .map(response.Category.create(_))
+                  .fold(
+                    NotFound(s"Not cateogry with ID ${id}")
+                  )(
+                    _.asJson
+                      .pipe(Ok(_))
+                  )
+              ),
+        )
+      private def delete(id: String) = parse(id).fold(
+        t => BadRequest(t.getMessage()),
+        id =>
+          categoryService
+            .deleteCatgory(id)
+            .flatMap(x => NoContent())
+            .handleErrorWith(e => BadRequest(e.getMessage())),
+      )
+      private def displayDecodeError(e: Throwable): F[Response[F]] =
+        e.getCause() match
+          case d: DecodingFailure => BadRequest(d.message + "decoding failed")
+          case _ => BadRequest(e.getMessage())
+      private def create(input: cryocompose.request.Category.Create[CategoryID]): F[Response[F]] =
+        categoryService
+          .createCategory(
+            CategoryParam(input.name, input.description, input.parent)
+          )
+          .map(response.Category.create[CategoryID](_))
+          .map(_.asJson)
+          .flatMap(Created(_))
+          .handleErrorWith(e => Ok(e.getMessage()))

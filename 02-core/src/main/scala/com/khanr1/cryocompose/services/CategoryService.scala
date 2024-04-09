@@ -41,7 +41,7 @@ trait CategoryService[F[_], CategoryID]:
     * @param category
     * @return
     */
-  def createCategory(category: CategoryParam[CategoryID]): F[CategoryID]
+  def createCategory(category: CategoryParam[CategoryID]): F[Category[CategoryID]]
   /** delete a category with id CategoryID
     *
     * @param id
@@ -67,7 +67,7 @@ object CategoryService:
 
       override def findByID(id: CategoryID): F[Option[Category[CategoryID]]] = repo.readByID(id)
 
-      override def createCategory(category: CategoryParam[CategoryID]): F[CategoryID] =
+      override def createCategory(category: CategoryParam[CategoryID]): F[Category[CategoryID]] =
         repo.create(category)
 
       override def findRoot: F[Vector[Category[CategoryID]]] = repo.readRoots
