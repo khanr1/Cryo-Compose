@@ -26,19 +26,23 @@ object CategoryController:
     new Controller[F] with Http4sDsl[F]:
       private val prefixPath = "/categories"
       private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
-
+        // GET
         case GET -> Root => searchAllCategories
         case GET -> Root / "roots" => searchRoots
         case GET -> Root / "children" / id => searchChildren(id)
         case GET -> Root / id => searchById(id)
-
+        // DELETE
         case DELETE -> Root / id => delete(id)
-
+        // POST
         case r @ POST -> Root =>
           r.as[cryocompose.request.Category.Create[CategoryID]]
             .flatMap(x => create(x))
             .handleErrorWith(e => displayDecodeError(e))
-
+        // PUT
+        case r @ PUT -> Root / id =>
+          r.as[cryocompose.request.Category.Update[CategoryID]]
+            .flatMap(update(id))
+            .handleErrorWith(e => displayDecodeError(e))
       }
       override def routes: HttpRoutes[F] = Router(
         prefixPath -> httpRoutes
@@ -120,3 +124,75 @@ object CategoryController:
           .map(_.asJson)
           .flatMap(Created(_))
           .handleErrorWith(e => Ok(e.getMessage()))
+      private def update(id: String)
+        : cryocompose.request.Category.Update[CategoryID] => F[Response[F]] =
+        _.fold(
+          updateName(id),
+          updateDescription(id),
+          updateParent(id),
+          updateAll(id),
+        )
+      def updateName(id: String)(name: CategoryName) =
+        parseAndCheck(id)(cat =>
+          categoryService
+            .updateCategory(cat.copy(name = name))
+            .flatMap(x => Ok())
+        )
+      def updateParent(id: String)(p: Option[CategoryID]) = parseAndCheck(id)(cat =>
+        categoryService
+          .updateCategory(cat.copy(parent = p))
+          .flatMap(x => Ok())
+      )
+      def updateDescription(id: String)(d: CategoryDescription) =
+        parseAndCheck(id)(cat =>
+          categoryService
+            .updateCategory(cat.copy(description = d))
+            .flatMap(x => Ok())
+        )
+      def updateAll(
+        id: String
+      )(
+        n: CategoryName,
+        d: CategoryDescription,
+        p: Option[CategoryID],
+      ) = parseAndCheck(id)(cat =>
+        categoryService
+          .updateCategory(cat.copy(name = n, description = d, parent = p))
+          .flatMap(x => Ok())
+      )
+
+      /*Helper to parse input string to ID of type categoryID. when the parsing
+      fails, the parsing fails, the helper return a response NotAcceptable, is
+      the parsing is successfull, a function taking the id parsed to a
+      CategoryID and returning aresponse is applied */
+      private def parseID(
+        id: String
+      )(
+        success: CategoryID => F[Response[F]]
+      ): F[Response[F]] =
+        parse(id).fold(
+          throwable => NotAcceptable(" the given ID cannot be parsed"),
+          id => success(id),
+        )
+
+      /* Helper to check if given  category with ID CategoryID exist . If the
+      category  does not exist it returns a NotFound response otherwise applied
+      the function function taking the found category and return a response */
+      private def checkID(
+        success: Category[CategoryID] => F[Response[F]]
+      )(
+        id: CategoryID
+      ): F[Response[F]] =
+        categoryService
+          .findByID(id)
+          .flatMap(
+            _.fold(NotFound(s"No category with id $id found"))(cat => success(cat))
+          )
+      /* helper to parse and check an  ID. Simply the combination of both previous
+      function */
+      private def parseAndCheck(
+        id: String
+      )(
+        success: Category[CategoryID] => F[Response[F]]
+      ) =
+        parseID(id)(checkID(success))
