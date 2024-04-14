@@ -6,7 +6,7 @@ import cats.effect.{ IO, Ref }
 import cats.effect.unsafe.implicits.global
 import cats.Show
 
-import inMemory.{ request, TagController }
+import inMemory.TagController
 import response.Tag.given
 import services.TagService
 import suite.HttpSuite
