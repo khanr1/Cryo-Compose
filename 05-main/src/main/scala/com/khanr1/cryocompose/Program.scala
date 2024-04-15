@@ -8,6 +8,7 @@ import com.khanr1.cryocompose.controllers.inMemory.TagController
 import io.github.iltotore.iron.autoRefine
 import org.typelevel.log4cats.Logger
 import com.khanr1.cryocompose.modules.CategoryDependencyGraph
+import com.khanr1.cryocompose.modules.MainDependencyGraph
 
 object Program:
   val tagState: Vector[Tag[Int]] = Vector(
@@ -42,9 +43,10 @@ object Program:
       catRef <- Ref.of[F, Vector[Category[Int]]](catState)
       tagController <- TagDependencyGraph.make(tagRef)
       categoryController <- CategoryDependencyGraph.make(catRef)
+      mainController <- MainDependencyGraph.make
       _ <- HttpServer
         .make(
-          HttpApi.make(tagController, categoryController)
+          HttpApi.make(tagController, categoryController, mainController)
         )
         .serve
         .useForever
