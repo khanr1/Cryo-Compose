@@ -1,4 +1,6 @@
-package com.khanr1.cryocompose.controllers
+package com.khanr1
+package cryocompose
+package controllers
 
 import cats.*
 import org.http4s.dsl.Http4sDsl

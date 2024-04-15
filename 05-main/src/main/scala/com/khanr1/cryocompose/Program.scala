@@ -1,14 +1,12 @@
 package com.khanr1
 package cryocompose
 
-import com.khanr1.cryocompose.modules.TagDependencyGraph
 import cats.effect.*
 import cats.implicits.*
 import com.khanr1.cryocompose.controllers.inMemory.TagController
+import com.khanr1.cryocompose.modules.*
 import io.github.iltotore.iron.autoRefine
 import org.typelevel.log4cats.Logger
-import com.khanr1.cryocompose.modules.CategoryDependencyGraph
-import com.khanr1.cryocompose.modules.MainDependencyGraph
 
 object Program:
   val tagState: Vector[Tag[Int]] = Vector(
