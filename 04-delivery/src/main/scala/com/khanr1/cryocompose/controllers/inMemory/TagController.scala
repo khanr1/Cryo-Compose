@@ -9,20 +9,14 @@ import scala.util.chaining.*
 
 import org.http4s.*
 import org.http4s.circe.*
-import org.http4s.dsl.Http4sDsl
-import org.http4s.server.Router
 
 import response.Tag.given
 
 import cats.*
-import cats.syntax.all.*
 import cats.data.*
 
 import io.circe.*
 import io.circe.syntax.*
-import io.circe.generic.semiauto.*
-
-import io.github.iltotore.iron.circe.given
 
 object TagController:
   def make[F[_]: effect.Async, TagID](
@@ -106,19 +100,3 @@ object TagController:
             .asJson
             .pipe(Ok(_))
         }
-
-object request:
-  object Tag:
-    case class Create(name: TagName)
-
-    object Create:
-      def create(name: String): ValidatedNel[String, Create] =
-        TagName.either(name).map(Create(_)).toValidatedNel
-      given Decoder[Create] = Decoder
-        .forProduct1("name")(create(_))
-        .emap(
-          _.toEither.leftMap(x => x.mkString_("\n"))
-        )
-      given entityDecoder[F[_]: cats.effect.Concurrent]: EntityDecoder[F, Create] = jsonOf
-      given Encoder[Create] = Encoder.forProduct1("name")(n => n.name)
-      given entityEncoder[F[_]: cats.effect.Concurrent]: EntityEncoder[F, Create] = jsonEncoderOf

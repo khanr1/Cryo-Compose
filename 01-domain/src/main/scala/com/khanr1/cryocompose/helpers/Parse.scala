@@ -11,6 +11,7 @@ import cats.syntax.all.*
 trait Parse[-From, +To] extends Function1[From, Either[Throwable, To]]
 
 object Parse:
+
   /** Implicit converter from String to Either[Throwable, Long]
     */
   given parseStringToLong: Parse[String, Long] =
@@ -35,3 +36,8 @@ object Parse:
             cause,
           )
         }
+  given parseStringToOptionA[A](
+    using
+    p: Parse[String, A]
+  ): Parse[String, Option[A]] =
+    s => if s.isEmpty() then None.asRight[Throwable] else p(s).map(Some(_))
