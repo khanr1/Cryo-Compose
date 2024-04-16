@@ -21,34 +21,37 @@ lazy val `cryo-compose` =
 //industry, one will have concept such as Account; Saving Account etc... that will
 //be modeled in this folder.
 
-lazy val domain = crossProject(JSPlatform, JVMPlatform)
-  .crossType(CrossType.Pure)
-  .in(file("01-domain"))
-  .jvmSettings(
-    libraryDependencies ++= Seq(
-      Library.iron.value,
-      Library.ironScalaC.value,
-      Library.ironCat.value,
-      Library.ironCirce.value,
-      Library.cats.value,
-      Library.kitten.value,
-      Library.monocle.value,
-      Library.squants.value,
+lazy val domain =
+  crossProject(JSPlatform, JVMPlatform)
+    .crossType(CrossType.Pure)
+    .in(file("01-domain"))
+    .settings(testDependencies)
+    .jvmSettings(
+      libraryDependencies ++= Seq(
+        Library.iron.value,
+        Library.ironScalaC.value,
+        Library.ironCat.value,
+        Library.ironCirce.value,
+        Library.cats.value,
+        Library.kitten.value,
+        Library.monocle.value,
+        Library.squants.value,
+      )
     )
-  )
-  .jsSettings(
-    libraryDependencies ++= Seq(
-      Library.iron.value,
-      Library.ironScalaC.value,
-      Library.ironCat.value,
-      Library.ironCirce.value,
-      Library.cats.value,
-      Library.kitten.value,
-      Library.monocle.value,
-      Library.squants.value,
+    .jsSettings(
+      test := {},
+      scalacOptions := List("-scalajs"),
+      libraryDependencies ++= Seq(
+        Library.iron.value,
+        Library.ironScalaC.value,
+        Library.ironCat.value,
+        Library.ironCirce.value,
+        Library.cats.value,
+        Library.kitten.value,
+        Library.monocle.value,
+        Library.squants.value,
+      ),
     )
-  )
-  .settings(testDependencies)
 
 //Core contains our application logic. In our previous example, creating and account
 //or more generally CRUD.
@@ -117,6 +120,7 @@ lazy val frontend =
         Library.http4sClient.value,
       )
     )
+
 //Some aliases
 addCommandAlias("run", "main/run")
 addCommandAlias("reStart", "main/reStart")
@@ -125,9 +129,9 @@ addCommandAlias("reStart", "main/reStart")
 lazy val testDependencies = Seq(
   testFrameworks += new TestFramework("weaver.framework.CatsEffect"),
   libraryDependencies ++= Seq(
-    Library.weaverCats,
-    Library.weaverDiscipline,
-    Library.weaverScalaCheck,
+    Library.weaverCats % Test,
+    Library.weaverDiscipline % Test,
+    Library.weaverScalaCheck % Test,
   ),
 )
 
