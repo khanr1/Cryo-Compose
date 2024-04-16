@@ -5,6 +5,7 @@ package request
 import cats.*
 import cats.data.*
 import cats.syntax.all.*
+import cryocompose.CategoryParam.given
 import com.khanr1.cryocompose.helpers.Parse
 import io.circe.*
 import io.circe.syntax.*
@@ -13,6 +14,12 @@ import org.http4s.*
 import org.http4s.circe.*
 
 object Category:
+  given entityDecoder[F[_]: effect.Concurrent, CategoryID](
+    using
+    d: Decoder[Option[CategoryID]]
+  ): EntityDecoder[F, CategoryParam[CategoryID]] =
+    jsonOf
+
   case class Create[CategoryID](
     name: CategoryName,
     description: CategoryDescription,

@@ -51,9 +51,9 @@ final case class CategoryParam[CategoryID](
 object CategoryParam:
   given show[CategoryID]: Show[Category[CategoryID]] = Show.fromToString
   given eq[CategoryID]: Eq[Category[CategoryID]] = Eq.fromUniversalEquals
-  given decoder[CategoryID: Decoder](
+  given decoder[CategoryID](
     using
-    parser: helpers.Parse[String, Option[CategoryID]]
+    d: Decoder[Option[CategoryID]]
   ): Decoder[CategoryParam[CategoryID]] =
     Decoder.forProduct3("name", "description", "parent")(CategoryParam[CategoryID](_, _, _))
 

@@ -4,6 +4,7 @@ package controllers
 package inMemory
 
 import scala.util.chaining.*
+import io.circe.Decoder
 
 import com.khanr1.cryocompose.services.CategoryService
 import com.khanr1.cryocompose.helpers.Parse
@@ -16,11 +17,11 @@ import cats.*
 import io.circe.syntax.*
 import io.github.iltotore.iron.*
 import io.circe.DecodingFailure
+import io.circe.Encoder
 
 /** An object responsible for creating an HTTP controller for category-related operations.
   */
 object CategoryController:
-
   /** Creates a new instance of the HTTP controller for category operations.
     *
     * @tparam F the effect type, typically a type constructor representing a monadic effect such as `IO`, `Future`, etc.
@@ -29,7 +30,7 @@ object CategoryController:
     * @param parse the parser for converting strings to category identifiers.
     * @return an instance of the HTTP controller for categories.
     */
-  def make[F[_]: effect.Async, CategoryID](
+  def make[F[_]: effect.Async, CategoryID: Encoder: Decoder](
     categoryService: CategoryService[F, CategoryID]
   )(using
     parse: helpers.Parse[String, CategoryID]
@@ -61,7 +62,7 @@ object CategoryController:
         request: Request[F]
       ): F[Response[F]] =
         request
-          .as[cryocompose.request.Category.Create[CategoryID]]
+          .as[CategoryParam[CategoryID]]
           .flatMap(create)
           .handleErrorWith(displayDecodeError)
 
@@ -180,12 +181,11 @@ object CategoryController:
         * @param input the input for creating the category.
         * @return an effectful computation yielding the HTTP response for the creation operation.
         */
-      private def create(input: cryocompose.request.Category.Create[CategoryID]): F[Response[F]] =
+      private def create(input: CategoryParam[CategoryID]): F[Response[F]] =
         categoryService
           .createCategory(
-            CategoryParam(input.name, input.description, input.parent)
+            input
           )
-          .map(response.Category.create[CategoryID](_))
           .map(_.asJson)
           .flatMap(Created(_))
           .handleErrorWith(e => Ok(e.getMessage()))
