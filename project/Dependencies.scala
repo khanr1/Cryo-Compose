@@ -22,9 +22,9 @@ object Dependencies {
     val cats = Def.setting("org.typelevel" %%% "cats-core" % Version.cats)
     val catsEffect = "org.typelevel" %% "cats-effect" % Version.catsEffect
 
-    val circe = "io.circe" %% "circe-core" % Version.circe
-    val circeGeneric = "io.circe" %% "circe-generic" % Version.circe
-    val circeParser = "io.circe" %% "circe-parser" % Version.circe
+    val circe = Def.setting("io.circe" %% "circe-core" % Version.circe)
+    val circeGeneric = Def.setting("io.circe" %% "circe-generic" % Version.circe)
+    val circeParser = Def.setting("io.circe" %% "circe-parser" % Version.circe)
 
     val htt4sCirce = "org.http4s" %% "http4s-circe" % Version.http4s
     val http4sClient =
