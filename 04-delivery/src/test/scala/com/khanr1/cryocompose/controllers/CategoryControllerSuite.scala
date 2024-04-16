@@ -35,7 +35,7 @@ object CategoryControllerSuite extends HttpSuite:
         override def findAll: IO[Vector[Category[Int]]] = IO.pure(categories)
 
     forall(Gen.listOf(categoryGen[Int]))(categories =>
-      val bodyRes = categories.map(response.Category.create(_))
+      val bodyRes = categories // .map(response.Category.create(_))
       val req = Method.GET(uri"/categories")
       val routes = CategoryController.make[IO, Int](categoryServiceTest(categories.toVector)).routes
       expectHttpBodyAndStatus(routes, req)(bodyRes, Status.Ok)

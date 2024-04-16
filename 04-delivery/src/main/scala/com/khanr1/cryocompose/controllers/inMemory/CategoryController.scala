@@ -97,7 +97,6 @@ object CategoryController:
           .findAll
           .flatMap(categories =>
             categories
-              .map(response.Category.create(_))
               .asJson
               .pipe(Ok(_))
           )
@@ -110,7 +109,6 @@ object CategoryController:
           .findRoot
           .flatMap(categories =>
             categories
-              .map(response.Category.create(_))
               .asJson
               .pipe(Ok(_))
           )
@@ -127,7 +125,6 @@ object CategoryController:
               .findChildren(id)
               .flatMap(categories =>
                 categories
-                  .map(response.Category.create(_))
                   .asJson
                   .pipe(Ok(_))
               ),
@@ -145,7 +142,6 @@ object CategoryController:
               .findByID(id)
               .flatMap(maybeCategory =>
                 maybeCategory
-                  .map(response.Category.create(_))
                   .fold(
                     NotFound(s"Not cateogry with ID ${id}")
                   )(
