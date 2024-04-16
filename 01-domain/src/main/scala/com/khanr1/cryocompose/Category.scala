@@ -3,6 +3,11 @@ package cryocompose
 
 import utils.HasHierarchy
 
+import cats.Eq
+import cats.Show
+import io.circe.Decoder
+import io.circe.Encoder
+import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 
@@ -20,6 +25,14 @@ final case class Category[CategoryID](
   parent: Option[CategoryID] = None,
 ) extends HasHierarchy[CategoryID]
 
+object Category:
+  given show[CategoryID]: Show[Category[CategoryID]] = Show.fromToString
+  given eq[CategoryID]: Eq[Category[CategoryID]] = Eq.fromUniversalEquals
+  given encoder[CategoryID: Encoder]: Encoder[Category[CategoryID]] =
+    Encoder.forProduct4("id", "name", "description", "parent")(c =>
+      (c.id, c.name, c.description, c.parent)
+    )
+
 /** CategoryParam is used to create a category
   *
   * @param name
@@ -34,6 +47,15 @@ final case class CategoryParam[CategoryID](
   description: CategoryDescription,
   parent: Option[CategoryID] = None,
 )
+
+object CategoryParam:
+  given show[CategoryID]: Show[Category[CategoryID]] = Show.fromToString
+  given eq[CategoryID]: Eq[Category[CategoryID]] = Eq.fromUniversalEquals
+  given decoder[CategoryID: Decoder](
+    using
+    parser: helpers.Parse[String, Option[CategoryID]]
+  ): Decoder[CategoryParam[CategoryID]] =
+    Decoder.forProduct3("name", "description", "parent")(CategoryParam[CategoryID](_, _, _))
 
 type CategoryNameR = DescribedAs[Not[Empty], "The name of a category cannot be an empty"]
 opaque type CategoryName = String :| CategoryNameR
