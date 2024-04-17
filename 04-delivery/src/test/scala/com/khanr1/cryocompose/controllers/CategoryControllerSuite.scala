@@ -7,7 +7,6 @@ import cats.effect.unsafe.implicits.global
 import cats.Show
 
 import inMemory.CategoryController
-import response.Category.given
 import services.CategoryService
 import suite.HttpSuite
 
@@ -28,7 +27,6 @@ import weaver.*
 import weaver.scalacheck.*
 
 object CategoryControllerSuite extends HttpSuite:
-  given Show[Category[Int]] = Show.fromToString
   test("GET all Categories works") {
     def categoryServiceTest(categories: Vector[Category[Int]]): CategoryTestService =
       new CategoryTestService:
