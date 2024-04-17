@@ -12,8 +12,6 @@ import com.khanr1.cryocompose.helpers.Parse
 import org.http4s.*
 import org.http4s.circe.*
 
-import cryocompose.request.Category.{ *, given }
-
 import cats.*
 import io.circe.syntax.*
 
@@ -83,7 +81,7 @@ object CategoryController:
         id: String,
       ): F[Response[F]] =
         request
-          .as[cryocompose.request.Category.Update[CategoryID]]
+          .as[CategoryParam[CategoryID]]
           .flatMap(update(id))
           .handleErrorWith(displayDecodeError)
 
@@ -196,67 +194,11 @@ object CategoryController:
         * @param id the identifier of the category to update.
         * @return a function accepting the update input and yielding the HTTP response for the update operation.
         */
-      private def update(id: String)
-        : cryocompose.request.Category.Update[CategoryID] => F[Response[F]] =
-        _.fold(
-          updateName(id),
-          updateDescription(id),
-          updateParent(id),
-          updateAll(id),
-        )
-      /** Updates the name of a category.
-        *
-        * @param id the identifier of the category to update.
-        * @param name the new name for the category.
-        * @return an effectful computation representing the update operation.
-        */
-      def updateName(id: String)(name: CategoryName) =
-        parseAndCheck(id)(cat =>
-          categoryService
-            .updateCategory(cat.copy(name = name))
-            .flatMap(x => Ok())
-        )
-
-      /** Updates the parent of a category.
-        *
-        * @param id the identifier of the category to update.
-        * @param p the new parent for the category.
-        * @return an effectful computation representing the update operation.
-        */
-      def updateParent(id: String)(p: Option[CategoryID]) = parseAndCheck(id)(cat =>
+      private def update(id: String)(param: CategoryParam[CategoryID]) = parseAndCheck(id)(cat =>
         categoryService
-          .updateCategory(cat.copy(parent = p))
-          .flatMap(x => Ok())
-      )
-      /** Updates the description of a category.
-        *
-        * @param id the identifier of the category to update.
-        * @param d the new description for the category.
-        * @return an effectful computation representing the update operation.
-        */
-      def updateDescription(id: String)(d: CategoryDescription) =
-        parseAndCheck(id)(cat =>
-          categoryService
-            .updateCategory(cat.copy(description = d))
-            .flatMap(x => Ok())
-        )
-      /** Updates all properties of a category.
-        *
-        * @param id the identifier of the category to update.
-        * @param n the new name for the category.
-        * @param d the new description for the category.
-        * @param p the new parent for the category.
-        * @return an effectful computation representing the update operation.
-        */
-      def updateAll(
-        id: String
-      )(
-        n: CategoryName,
-        d: CategoryDescription,
-        p: Option[CategoryID],
-      ) = parseAndCheck(id)(cat =>
-        categoryService
-          .updateCategory(cat.copy(name = n, description = d, parent = p))
+          .updateCategory(
+            cat.copy(name = param.name, description = param.description, parent = param.parent)
+          )
           .flatMap(x => Ok())
       )
 
