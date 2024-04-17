@@ -33,6 +33,8 @@ def tagGen[A: Arbitrary]: Gen[Tag[A]] = for
   name <- tagNameGen
 yield Tag[A](id, name)
 
+def tagParamGen[A: Arbitrary]: Gen[TagParam[A]] = tagNameGen.flatMap(TagParam[A](_))
+
 def categoryGen[A: Arbitrary]: Gen[Category[A]] = for
   a <- Arbitrary.arbitrary[A]
   name <- categoryNameGen

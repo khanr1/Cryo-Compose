@@ -8,6 +8,7 @@ import io.circe.Decoder
 
 import com.khanr1.cryocompose.services.CategoryService
 import com.khanr1.cryocompose.helpers.Parse
+
 import org.http4s.*
 import org.http4s.circe.*
 
@@ -15,13 +16,18 @@ import cryocompose.request.Category.{ *, given }
 
 import cats.*
 import io.circe.syntax.*
-import io.github.iltotore.iron.*
+
 import io.circe.DecodingFailure
 import io.circe.Encoder
 
 /** An object responsible for creating an HTTP controller for category-related operations.
   */
 object CategoryController:
+  given entityDecoder[F[_]: effect.Concurrent, CategoryID](
+    using
+    d: Decoder[Option[CategoryID]]
+  ): EntityDecoder[F, CategoryParam[CategoryID]] =
+    jsonOf
   /** Creates a new instance of the HTTP controller for category operations.
     *
     * @tparam F the effect type, typically a type constructor representing a monadic effect such as `IO`, `Future`, etc.

@@ -7,7 +7,6 @@ import cats.effect.unsafe.implicits.global
 import cats.Show
 
 import inMemory.TagController
-import response.Tag.given
 import services.TagService
 import suite.HttpSuite
 
@@ -39,7 +38,7 @@ object TagControllerSuite extends HttpSuite:
         override def findAllTag: IO[Vector[Tag[Int]]] = IO.pure(tags)
 
     forall(Gen.listOf(tagGen[Int]))(tags =>
-      val bodyRes = tags.map(response.Tag[Int](_)).toVector
+      val bodyRes = tags // .map(response.Tag[Int](_)).toVector
       val req = Method.GET(uri"/tags")
       val routes = TagController.make[IO, Int](tagServicesTest(tags.toVector)).routes
       expectHttpBodyAndStatus(routes, req)(bodyRes, Status.Ok)
@@ -52,14 +51,14 @@ object TagControllerSuite extends HttpSuite:
       * @param tag a Tag[Int]
       * @return a new TestTagService
       */
-    def tagServiceTest(tag: Tag[Int]): TestTagServices = new TestTagServices:
-      override def createTag(name: TagName): IO[Tag[Int]] = IO.pure(tag)
+    def tagServiceTest(tag: TagParam[Int]): TestTagServices = new TestTagServices:
+      override def createTag(name: TagName): IO[Tag[Int]] = IO.pure(Tag(1, tag.name))
 
-    forall(tagGen[Int]) { t =>
+    forall(tagParamGen[Int]) { t =>
       val input = t.name // request.Tag.Create(t.name)
       val req = Method.POST(input, uri"/tags")
       val routes = TagController.make(tagServiceTest(t)).routes
-      val expected = response.Tag[Int](t).asJson
+      val expected = Tag(1, t.name).asJson
       expectHttpBodyAndStatus(routes, req)(expected, Status.Created)
     }
   }
