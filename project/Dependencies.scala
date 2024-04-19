@@ -16,15 +16,16 @@ object Dependencies {
     val http4s = "0.23.26"
     val log4cats = "2.6.0"
     val laminar = "16.0.0"
+    val laminarDom = "18.0.0"
   }
   object Library {
 
     val cats = Def.setting("org.typelevel" %%% "cats-core" % Version.cats)
     val catsEffect = "org.typelevel" %% "cats-effect" % Version.catsEffect
 
-    val circe = "io.circe" %% "circe-core" % Version.circe
-    val circeGeneric = "io.circe" %% "circe-generic" % Version.circe
-    val circeParser = "io.circe" %% "circe-parser" % Version.circe
+    val circe = Def.setting("io.circe" %% "circe-core" % Version.circe)
+    val circeGeneric = Def.setting("io.circe" %% "circe-generic" % Version.circe)
+    val circeParser = Def.setting("io.circe" %% "circe-parser" % Version.circe)
 
     val htt4sCirce = "org.http4s" %% "http4s-circe" % Version.http4s
     val http4sClient =
@@ -57,5 +58,6 @@ object Dependencies {
 
     // UI Library
     val laminar = Def.setting("com.raquo" %%% "laminar" % Version.laminar)
+    val laminarDom = Def.setting("com.raquo" %%% "domtypes" % Version.laminarDom)
   }
 }

@@ -7,7 +7,6 @@ import cats.effect.unsafe.implicits.global
 import cats.Show
 
 import inMemory.CategoryController
-import response.Category.given
 import services.CategoryService
 import suite.HttpSuite
 
@@ -28,14 +27,13 @@ import weaver.*
 import weaver.scalacheck.*
 
 object CategoryControllerSuite extends HttpSuite:
-  given Show[Category[Int]] = Show.fromToString
   test("GET all Categories works") {
     def categoryServiceTest(categories: Vector[Category[Int]]): CategoryTestService =
       new CategoryTestService:
         override def findAll: IO[Vector[Category[Int]]] = IO.pure(categories)
 
     forall(Gen.listOf(categoryGen[Int]))(categories =>
-      val bodyRes = categories.map(response.Category.create(_))
+      val bodyRes = categories // .map(response.Category.create(_))
       val req = Method.GET(uri"/categories")
       val routes = CategoryController.make[IO, Int](categoryServiceTest(categories.toVector)).routes
       expectHttpBodyAndStatus(routes, req)(bodyRes, Status.Ok)

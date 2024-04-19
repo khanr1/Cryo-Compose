@@ -10,8 +10,6 @@ import scala.util.chaining.*
 import org.http4s.*
 import org.http4s.circe.*
 
-import response.Tag.given
-
 import cats.*
 import cats.data.*
 
@@ -19,7 +17,10 @@ import io.circe.*
 import io.circe.syntax.*
 
 object TagController:
-  def make[F[_]: effect.Async, TagID](
+  given entityDecoder[F[_]: effect.Concurrent, TagID]: EntityDecoder[F, TagParam[TagID]] =
+    jsonOf
+
+  def make[F[_]: effect.Async, TagID: Encoder](
     tagServices: TagService[F, TagID]
   )(using
     parse: helpers.Parse[String, TagID]
@@ -32,7 +33,7 @@ object TagController:
         case GET -> Root => searchAllTag
         // POST ROUTES
         case r @ POST -> Root =>
-          r.as[request.Tag.Create]
+          r.as[TagParam[TagID]]
             .flatMap(x => create(x))
             .handleErrorWith(e => displayDecodeError(e))
         // DELETE ROUTES
@@ -58,12 +59,11 @@ object TagController:
         * @param input
         * @return a http Response
         */
-      private def create(input: request.Tag.Create): F[Response[F]] =
+      private def create(input: TagParam[TagID]): F[Response[F]] =
         tagServices
           .createTag(
             input.name
           )
-          .map(response.Tag(_))
           .map(_.asJson)
           .flatMap(Created(_))
           .handleErrorWith(e => Ok(e.getMessage()))
@@ -96,7 +96,6 @@ object TagController:
         .findAllTag
         .flatMap { tags =>
           tags
-            .map(response.Tag(_))
             .asJson
             .pipe(Ok(_))
         }

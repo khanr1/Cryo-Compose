@@ -36,6 +36,9 @@ lazy val domain =
         Library.kitten.value,
         Library.monocle.value,
         Library.squants.value,
+        Library.circe.value,
+        Library.circeGeneric.value,
+        Library.circeParser.value,
       )
     )
     .jsSettings(
@@ -50,6 +53,9 @@ lazy val domain =
         Library.kitten.value,
         Library.monocle.value,
         Library.squants.value,
+        Library.circe.value,
+        Library.circeGeneric.value,
+        Library.circeParser.value,
       ),
     )
 
@@ -85,10 +91,6 @@ lazy val delivery =
         Library.htt4sDsl,
         Library.htt4sEmberServer,
         Library.htt4sEmberClient,
-        Library.ironCirce.value,
-        Library.circe,
-        Library.circeGeneric,
-        Library.circeParser,
         Library.htt4sCirce,
       )
     )
@@ -117,6 +119,7 @@ lazy val frontend =
     .settings(
       libraryDependencies ++= Seq(
         Library.laminar.value,
+        Library.laminarDom.value,
         Library.http4sClient.value,
       )
     )

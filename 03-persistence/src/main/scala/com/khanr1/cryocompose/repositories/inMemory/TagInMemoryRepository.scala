@@ -21,7 +21,7 @@ object TagInMemoryRepository:
         .get
         .map(tags =>
           if tags.isEmpty then 1
-          else tags.map(t => t.id).max
+          else tags.map(t => t.id).max + 1
         )
 
       override def create(name: TagName): F[Tag[TagID]] =
