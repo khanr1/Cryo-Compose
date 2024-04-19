@@ -119,6 +119,7 @@ lazy val frontend =
     .settings(
       libraryDependencies ++= Seq(
         Library.laminar.value,
+        Library.laminarDom.value,
         Library.http4sClient.value,
       )
     )

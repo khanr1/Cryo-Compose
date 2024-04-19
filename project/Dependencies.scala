@@ -16,6 +16,7 @@ object Dependencies {
     val http4s = "0.23.26"
     val log4cats = "2.6.0"
     val laminar = "16.0.0"
+    val laminarDom = "18.0.0"
   }
   object Library {
 
@@ -57,5 +58,6 @@ object Dependencies {
 
     // UI Library
     val laminar = Def.setting("com.raquo" %%% "laminar" % Version.laminar)
+    val laminarDom = Def.setting("com.raquo" %%% "domtypes" % Version.laminarDom)
   }
 }
