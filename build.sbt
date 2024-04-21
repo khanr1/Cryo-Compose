@@ -147,7 +147,7 @@ fastOptCompileCopy := {
   val source = (frontend / Compile / fastOptJS).value.data
   IO.copyFile(
     source,
-    baseDirectory.value / jsPath / "frontend.js",
+    baseDirectory.value / jsPath / source.name,
   )
 }
 
