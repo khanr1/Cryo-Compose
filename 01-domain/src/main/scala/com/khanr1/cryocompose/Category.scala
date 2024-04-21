@@ -26,7 +26,7 @@ final case class Category[CategoryID](
 ) extends HasHierarchy[CategoryID]
 
 object Category:
-  given show[CategoryID]: Show[Category[CategoryID]] = Show.fromToString
+  given show[CategoryID]: Show[Category[CategoryID]] = Show.show(c => c.name.value)
   given eq[CategoryID]: Eq[Category[CategoryID]] = Eq.fromUniversalEquals
   given encoder[CategoryID: Encoder]: Encoder[Category[CategoryID]] =
     Encoder.forProduct4("id", "name", "description", "parent")(c =>
