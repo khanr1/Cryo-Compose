@@ -19,7 +19,7 @@ object MainController:
           .getOrElseF(NotFound())
       case request @ GET -> Root / "frontend" =>
         StaticFile
-          .fromResource[F]("frontend.js", Some(request))
+          .fromResource[F]("frontend-fastopt.js", Some(request))
           .getOrElseF(NotFound())
     }
 

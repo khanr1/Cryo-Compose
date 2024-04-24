@@ -68,7 +68,7 @@ lazy val core =
     .dependsOn(domain.jvm % Cctt)
     .settings(
       libraryDependencies ++= Seq(
-        Library.catsEffect
+        Library.catsEffect.value
       )
     )
 
@@ -87,11 +87,10 @@ lazy val delivery =
     .dependsOn(core % Cctt)
     .settings(
       libraryDependencies ++= Seq(
-        Library.htt4sCirce,
-        Library.htt4sDsl,
-        Library.htt4sEmberServer,
-        Library.htt4sEmberClient,
-        Library.htt4sCirce,
+        Library.htt4sDsl.value,
+        Library.htt4sEmberServer.value,
+        Library.htt4sEmberClient.value,
+        Library.htt4sCirce.value,
       )
     )
 
@@ -118,9 +117,11 @@ lazy val frontend =
     .settings(scalaJSUseMainModuleInitializer := true)
     .settings(
       libraryDependencies ++= Seq(
+        Library.htt4sCirce.value,
+        Library.http4sClient.value,
+        Library.http4sDom.value,
         Library.laminar.value,
         Library.laminarDom.value,
-        Library.http4sClient.value,
       )
     )
 
@@ -147,7 +148,7 @@ fastOptCompileCopy := {
   val source = (frontend / Compile / fastOptJS).value.data
   IO.copyFile(
     source,
-    baseDirectory.value / jsPath / "frontend.js",
+    baseDirectory.value / jsPath / source.name,
   )
 }
 

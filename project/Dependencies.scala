@@ -17,29 +17,30 @@ object Dependencies {
     val log4cats = "2.6.0"
     val laminar = "16.0.0"
     val laminarDom = "18.0.0"
+    val http4sDom = "0.2.8"
   }
   object Library {
 
     val cats = Def.setting("org.typelevel" %%% "cats-core" % Version.cats)
-    val catsEffect = "org.typelevel" %% "cats-effect" % Version.catsEffect
+    val catsEffect = Def.setting("org.typelevel" %%% "cats-effect" % Version.catsEffect)
 
-    val circe = Def.setting("io.circe" %% "circe-core" % Version.circe)
-    val circeGeneric = Def.setting("io.circe" %% "circe-generic" % Version.circe)
-    val circeParser = Def.setting("io.circe" %% "circe-parser" % Version.circe)
+    val circe = Def.setting("io.circe" %%% "circe-core" % Version.circe)
+    val circeGeneric = Def.setting("io.circe" %%% "circe-generic" % Version.circe)
+    val circeParser = Def.setting("io.circe" %%% "circe-parser" % Version.circe)
 
-    val htt4sCirce = "org.http4s" %% "http4s-circe" % Version.http4s
+    val htt4sCirce = Def.setting("org.http4s" %%% "http4s-circe" % Version.http4s)
     val http4sClient =
       Def.setting("org.http4s" %%% "http4s-client" % Version.http4s)
-    val htt4sDsl = "org.http4s" %% "http4s-dsl" % Version.http4s
+    val htt4sDsl = Def.setting("org.http4s" %%% "http4s-dsl" % Version.http4s)
     val htt4sEmberServer =
-      "org.http4s" %% "http4s-ember-server" % Version.http4s
+      Def.setting("org.http4s" %%% "http4s-ember-server" % Version.http4s)
     val htt4sEmberClient =
-      "org.http4s" %% "http4s-ember-client" % Version.http4s
+      Def.setting("org.http4s" %% "http4s-ember-client" % Version.http4s)
 
-    val iron = Def.setting("io.github.iltotore" %% "iron" % Version.iron)
-    val ironCat = Def.setting("io.github.iltotore" %% "iron-cats" % Version.iron)
-    val ironCirce = Def.setting("io.github.iltotore" %% "iron-circe" % Version.iron)
-    val ironScalaC = Def.setting("io.github.iltotore" %% "iron-scalacheck" % Version.iron)
+    val iron = Def.setting("io.github.iltotore" %%% "iron" % Version.iron)
+    val ironCat = Def.setting("io.github.iltotore" %%% "iron-cats" % Version.iron)
+    val ironCirce = Def.setting("io.github.iltotore" %%% "iron-circe" % Version.iron)
+    val ironScalaC = Def.setting("io.github.iltotore" %%% "iron-scalacheck" % Version.iron)
     val ironSkunk = Def.setting("io.github.iltotore" %% "iron-skunk" % Version.iron)
     val kitten = Def.setting("org.typelevel" %% "kittens" % Version.kitten)
     val log4cats = "org.typelevel" %% "log4cats-core" % Version.log4cats
@@ -59,5 +60,6 @@ object Dependencies {
     // UI Library
     val laminar = Def.setting("com.raquo" %%% "laminar" % Version.laminar)
     val laminarDom = Def.setting("com.raquo" %%% "domtypes" % Version.laminarDom)
+    val http4sDom = Def.setting("org.http4s" %%% "http4s-dom" % Version.http4sDom)
   }
 }
