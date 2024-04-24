@@ -3,20 +3,17 @@ package cryocompose
 package controllers
 package inMemory
 
-import scala.util.chaining.*
-import io.circe.Decoder
-
-import com.khanr1.cryocompose.services.CategoryService
+import cats.*
 import com.khanr1.cryocompose.helpers.Parse
-
+import com.khanr1.cryocompose.services.CategoryService
+import io.circe.Decoder
+import io.circe.DecodingFailure
+import io.circe.Encoder
+import io.circe.syntax.*
 import org.http4s.*
 import org.http4s.circe.*
 
-import cats.*
-import io.circe.syntax.*
-
-import io.circe.DecodingFailure
-import io.circe.Encoder
+import scala.util.chaining.*
 
 /** An object responsible for creating an HTTP controller for category-related operations.
   */

@@ -23,6 +23,8 @@ object Tag:
   given eq[TagID]: Eq[Tag[TagID]] = Eq.fromUniversalEquals
   given encoder[TagID: Encoder]: Encoder[Tag[TagID]] =
     Encoder.forProduct2("id", "name")(t => (t.id, t.name))
+  given decoder[TagID: Decoder]: Decoder[Tag[TagID]] =
+    Decoder.forProduct2("id", "name")(Tag[TagID](_, _))
 
 /** TagParam is used to create a category
   *

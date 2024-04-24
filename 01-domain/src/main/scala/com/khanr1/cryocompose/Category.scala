@@ -1,15 +1,15 @@
 package com.khanr1
 package cryocompose
 
-import utils.HasHierarchy
-
 import cats.Eq
 import cats.Show
 import io.circe.Decoder
 import io.circe.Encoder
-import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.*
+import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
+
+import utils.HasHierarchy
 
 /** A Categorie allow to regroup product into families
   *
@@ -31,6 +31,14 @@ object Category:
   given encoder[CategoryID: Encoder]: Encoder[Category[CategoryID]] =
     Encoder.forProduct4("id", "name", "description", "parent")(c =>
       (c.id, c.name, c.description, c.parent)
+    )
+  given decoder[CategoryID](
+    using
+    d1: Decoder[CategoryID],
+    d2: Decoder[Option[CategoryID]],
+  ): Decoder[Category[CategoryID]] =
+    Decoder.forProduct4("id", "name", "description", "parent")(
+      Category[CategoryID](_, _, _, _)
     )
 
 /** CategoryParam is used to create a category

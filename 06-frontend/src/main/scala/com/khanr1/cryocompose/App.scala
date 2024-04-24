@@ -1,36 +1,29 @@
 package com.khanr1
 package cryocompose
 
-import org.scalajs.dom
+import cats.effect.IO
+import cats.effect.unsafe.implicits.*
 import com.raquo.laminar.api.L.{ *, given }
+import org.http4s.*
+import org.http4s.circe.*
+import org.http4s.dom.FetchClientBuilder
+import org.http4s.implicits.*
+import org.scalajs.dom
 
-import com.khanr1.cryocompose.utils.Tree
-import com.khanr1.cryocompose.components.navigation.navigationBar
+import scala.concurrent.Future
 
+import cryocompose.components.navigation.navigationBar
+import cryocompose.utils.Tree
+import concurrent.ExecutionContext.Implicits.global
 object App:
-  val containerNode = dom.document.querySelector("#appContainer")
+  given entityDecoder: EntityDecoder[IO, List[Category[Int]]] =
+    jsonOf
 
-  val catState: Vector[Category[Int]] = Vector(
-    Category(
-      1,
-      CategoryName.assume("Wiring"),
-      CategoryDescription.assume("This category regroup all the wiring"),
-      None,
-    ),
-    Category(
-      2,
-      CategoryName.assume("RF Wiring"),
-      CategoryDescription.assume("This category regroup all the RF lines"),
-      Some(1),
-    ),
-    Category(
-      3,
-      CategoryName.assume("DC Wiring"),
-      CategoryDescription.assume("This category regroup all the DC lines"),
-      Some(1),
-    ),
-  )
-  val tree = Tree.construct(catState.toList)
-  val categories = navigationBar(tree)
+  val client = FetchClientBuilder[IO].create
+  val containerNode = dom.document.querySelector("#appContainer")
+  val categories = client
+    .expect[List[Category[Int]]](uri"http://localhost:8080/categories")
+    .unsafeToFuture()
+
   def main(args: Array[String]): Unit =
-    render(containerNode, categories)
+    for c <- categories yield render(containerNode, navigationBar(Tree.construct(c)))
