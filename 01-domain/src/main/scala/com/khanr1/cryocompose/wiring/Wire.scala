@@ -6,12 +6,11 @@ import squants.space.Length
 
 trait Material
 
-/** Representation of a wire used in a wiring assembly to connect pins from
-  * different material
+/** A trait representing a wire used in electrical connections.
   *
-  * @param material
-  *   the material of the wire
-  * @param length
-  *   the length of the wire
+  * @param material the material used for the wire.
+  * @param length the length of the wire, specified either as a direct length or as a standard stage length.
+  *               If specified as a direct length, it should be of type [[Length]], whereas if specified as a stage length,
+  *               it should be of type [[StageLength]].
   */
-trait Wire(material: Material, length: Length)
+trait Wire(material: Material, length: Length | StageLength)

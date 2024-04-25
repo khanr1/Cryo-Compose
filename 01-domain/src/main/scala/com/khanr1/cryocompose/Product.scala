@@ -22,9 +22,7 @@ trait Product[ProductID, CategoryID, TagID]:
   val productDescription: ProductDescription
   /** The identifier of the category to which the product belongs. */
   val categoryID: CategoryID
-
-  /** The set of identifiers of tags associated with the product.
-    */
+  /** The set of identifiers of tags associated with the product. */
   val tagsID: Set[TagID]
 
 /** A refined type representing the name of a product. */

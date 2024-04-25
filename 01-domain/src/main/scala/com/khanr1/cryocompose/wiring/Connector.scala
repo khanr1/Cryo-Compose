@@ -48,12 +48,12 @@ object NumberOfPin extends RefinedTypeOps[Int, NumberOfPinR, NumberOfPin]:
 
 /** Enumerates the genders of a connector: Male or Female.
   */
-enum Gender derives Show:
+enum Gender:
   case Male
   case Female
 
 object Gender:
-  import Gender.*
+  given show: Show[Gender] = Show.fromToString
   given iso: Iso[Gender, Boolean] = Iso[Gender, Boolean] {
     case Female => true
     case Male => false

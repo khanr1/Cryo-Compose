@@ -13,12 +13,18 @@ import io.github.iltotore.iron.circe.given
 import squants.electro.ElectricalResistance
 import squants.time.Frequency
 
-/** Represents the RF connector
+/** A final case class representing an RF connector.
   *
-  * @param name
-  *   the name of the connector
-  * @param gender
-  *   The gender of the connector
+  * @param id the identifier of the RF connector.
+  * @param name the name of the RF connector.
+  * @param gender the gender of the RF connector.
+  * @param category the category identifier associated with the RF connector.
+  * @param tags the set of tag identifiers associated with the RF connector.
+  * @tparam RfConnectorID the type of the identifier for RF connectors.
+  * @tparam CategoryID the type of the identifier for categories.
+  * @tparam TagID the type of the identifier for tags.
+  * @extends Connector An extension of the [[Connector]] trait.
+  * @extends Product An extension of the [[Product]] trait.
   */
 final case class RfConnector[RfConnectorID, CategoryID, TagID](
   id: RfConnectorID,
@@ -36,7 +42,13 @@ final case class RfConnector[RfConnectorID, CategoryID, TagID](
   override val tagsID = tags
 
   object RfConnector:
-    given show: Show[RfConnector[RfConnectorID, CategoryID, TagID]] = Show.fromToString
+    given show[RfConnectorID, CategoryID, TagID](
+      using
+      a: Show[CategoryID],
+      b: Show[RfConnectorID],
+      c: Show[TagID],
+    ): Show[RfConnector[RfConnectorID, CategoryID, TagID]] = Show.fromToString
+
     given eq: Eq[RfConnector[RfConnectorID, CategoryID, TagID]] = Eq.fromUniversalEquals
     given encoder[RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
       : Encoder[RfConnector[RfConnectorID, CategoryID, TagID]] =

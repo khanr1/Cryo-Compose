@@ -20,12 +20,17 @@ import java.util.UUID
 final case class RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](
   id: RfAssemblyID,
   connectors: List[RfConnector[RfConnectorID, CategoryID, TagID]],
-  lines: List[RfLine[RfConnectorID, CategoryID, TagID]],
-) extends WiringAssembly(connectors, lines)
+  line: RfLine[RfConnectorID, CategoryID, TagID],
+  tags: Set[TagID],
+) extends WiringAssembly(connectors, List(line))
        with Product[RfAssemblyID, CategoryID, TagID]:
-  override val code: ProductCode = ???
+  override val code: ProductCode =
+    val connectorsCode = connectors.map(_.code.show).mkString("(", "-", ")")
+    val lineCode = line.toString()
+    val full = connectorsCode + "-" + lineCode
+    ProductCode.applyUnsafe(full)
   override val productDescription: ProductDescription = ???
-  override val productID: RfAssemblyID = ???
+  override val productID: RfAssemblyID = id
   override val productName: ProductName = ???
-  override val categoryID: CategoryID = ???
-  override val tagsID: Set[TagID] = ???
+  override val categoryID: CategoryID = categoryID
+  override val tagsID: Set[TagID] = tags
