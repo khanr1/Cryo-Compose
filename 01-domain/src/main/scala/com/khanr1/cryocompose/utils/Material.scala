@@ -13,6 +13,12 @@ enum RFmaterial extends Material derives Show:
 
 object RFmaterial:
   given show: Show[RFmaterial] = Show.fromToString
+  given Encoder[RFmaterial] = Encoder.forProduct1("rf_material")(m =>
+    m match
+      case SCuNi => "SCuNi"
+      case NbTi => "NbTi"
+  )
+  given Decoder[RFmaterial] = Decoder.forProduct1("rf_material")(RFmaterial.valueOf(_))
 
 enum DCmaterial extends Material derives Show:
   case PhBr
