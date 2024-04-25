@@ -6,8 +6,11 @@ import cats.derived.*
 import cats.Show
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
+import io.circe.Encoder
+import io.circe.generic.auto.*
 
 import monocle.Iso
+import io.circe.Decoder
 
 /** Represents a connector with a name, gender, and number of pins.
   * @param name
@@ -50,7 +53,14 @@ enum Gender derives Show:
   case Female
 
 object Gender:
+  import Gender.*
   given iso: Iso[Gender, Boolean] = Iso[Gender, Boolean] {
     case Female => true
     case Male => false
   }(if _ then Female else Male)
+  given Encoder[Gender] = Encoder.forProduct1("gender")(g =>
+    g match
+      case Male => "Male"
+      case Female => "Female"
+  )
+  given Decoder[Gender] = Decoder.forProduct1("gender")(Gender.valueOf(_))
