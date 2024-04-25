@@ -43,3 +43,8 @@ final case class RfConnector[RfConnectorID, CategoryID, TagID](
       Encoder.forProduct5("id", "name", "gender", "category", "tags")(r =>
         (r.id, r.name, r.gender, r.category, r.tags)
       )
+    given decoder[RfConnectorID: Decoder, CategoryID: Decoder, TagID: Decoder]
+      : Decoder[RfConnector[RfConnectorID, CategoryID, TagID]] =
+      Decoder.forProduct5("id", "name", "gender", "category", "tags")(
+        rf.RfConnector[RfConnectorID, CategoryID, TagID](_, _, _, _, _)
+      )
