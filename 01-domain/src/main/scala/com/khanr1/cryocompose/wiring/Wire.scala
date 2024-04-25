@@ -3,7 +3,8 @@ package cryocompose
 package wiring
 
 import squants.space.Length
-import com.khanr1.cryocompose.utils.Material
+
+trait Material
 
 /** Representation of a wire used in a wiring assembly to connect pins from
   * different material

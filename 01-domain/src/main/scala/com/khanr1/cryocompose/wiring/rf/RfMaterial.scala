@@ -1,13 +1,11 @@
 package com.khanr1
 package cryocompose
-package utils
+package wiring
+package rf
 
 import cats.Show
-import cats.derived.*
 
-trait Material
-
-enum RFmaterial extends Material derives Show:
+enum RFmaterial extends Material:
   case SCuNi
   case NbTi
 
@@ -19,7 +17,3 @@ object RFmaterial:
       case NbTi => "NbTi"
   )
   given Decoder[RFmaterial] = Decoder.forProduct1("rf_material")(RFmaterial.valueOf(_))
-
-enum DCmaterial extends Material derives Show:
-  case PhBr
-  case Cu

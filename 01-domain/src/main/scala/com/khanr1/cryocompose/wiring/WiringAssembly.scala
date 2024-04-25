@@ -9,4 +9,4 @@ package wiring
   * @param line
   *   describes how the connector are linked to each others.
   */
-trait WiringAssembly(connectors: List[Connector], line: List[Line])
+trait WiringAssembly(connectors: List[Connector], lines: List[Line])
