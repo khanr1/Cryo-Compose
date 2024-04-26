@@ -29,8 +29,12 @@ final case class RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](
     val lineCode = line.toString()
     val full = connectorsCode + "-" + lineCode
     ProductCode.applyUnsafe(full)
-  override val productDescription: ProductDescription = ???
+  override val productDescription: ProductDescription =
+    val text = s"Semi rigid ${connectors.map(_.name).mkString("-")} ${line.wire.description}"
+    ProductDescription.applyUnsafe(text)
   override val productID: RfAssemblyID = id
-  override val productName: ProductName = ???
+  override val productName: ProductName =
+    val text = s"${line.wire.material} ${line.wire.length}"
+    ProductName.applyUnsafe(text)
   override val categoryID: CategoryID = categoryID
   override val tagsID: Set[TagID] = tags

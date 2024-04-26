@@ -14,4 +14,10 @@ import squants.space.Length
   * @extends Wire An extension of the [[Wire]] trait.
   */
 final case class RfWire(material: RFmaterial, length: Length | StageLength)
-    extends Wire(material, length)
+    extends Wire(material, length):
+  def description: String =
+    val lengthDescription = length match
+      case x: Length => x.value.show
+      case x: StageLength => x.show
+
+    material.show + " " + lengthDescription
