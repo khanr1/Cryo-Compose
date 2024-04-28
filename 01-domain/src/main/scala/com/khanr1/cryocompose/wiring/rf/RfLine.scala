@@ -3,6 +3,8 @@ package cryocompose
 package wiring
 package rf
 
+import cats.Show
+
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 
@@ -24,4 +26,18 @@ final case class RfLine[RfConnectorID, CategoryID, TagID](
       from = (connectorA, PinIndex(1)),
       to = (connectorB, PinIndex(1)),
       wire,
+    )
+
+object RfLine:
+  given show[RfConnectorID, CategoryID, TagID]: Show[RfLine[RfConnectorID, CategoryID, TagID]] =
+    Show.fromToString
+  given encoder[RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
+    : Encoder[RfLine[RfConnectorID, CategoryID, TagID]] =
+    Encoder.forProduct3("connector1", "connector2", "wire")(c =>
+      (c.connectorA, c.connectorB, c.wire)
+    )
+  given decoder[RfConnectorID: Decoder, CategoryID: Decoder, TagID: Decoder]
+    : Decoder[RfLine[RfConnectorID, CategoryID, TagID]] =
+    Decoder.forProduct3("connector1", "connector2", "wire")(
+      RfLine[RfConnectorID, CategoryID, TagID](_, _, _)
     )

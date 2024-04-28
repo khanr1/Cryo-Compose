@@ -3,10 +3,10 @@ package cryocompose
 package wiring
 package rf
 
+import cats.Show
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
-
-import java.util.UUID
+import com.khanr1.cryocompose.Category.decoder
 
 /** Representation for a RF assembly
   *
@@ -38,3 +38,12 @@ final case class RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](
     ProductName.applyUnsafe(text)
   override val categoryID: CategoryID = categoryID
   override val tagsID: Set[TagID] = tags
+
+object RfAssembly:
+  given show[RfAssemblyID, RfConnectorID, CategoryID, TagID]
+    : Show[RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID]] = Show.fromToString
+  given decoder[RfAssemblyID: Decoder, RfConnectorID: Decoder, CategoryID: Decoder, TagID: Decoder]
+    : Decoder[RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID]] =
+    Decoder.forProduct4("id", "connectors", "line", "tag")(
+      RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](_, _, _, _)
+    )

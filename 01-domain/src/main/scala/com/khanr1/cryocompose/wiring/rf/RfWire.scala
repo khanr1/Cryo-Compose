@@ -3,6 +3,7 @@ package cryocompose
 package wiring
 package rf
 
+import cats.Show
 import squants.space.Length
 
 /** A final case class representing an RF wire used in electrical connections.
@@ -21,3 +22,9 @@ final case class RfWire(material: RFmaterial, length: Length | StageLength)
       case x: StageLength => x.show
 
     material.show + " " + lengthDescription
+
+object RfWire:
+  given show: Show[RfWire] = Show.fromToString
+  given encoder: Encoder[RfWire] =
+    Encoder.forProduct2("material", "length")(w => (w.material, w.length))
+  given decoder: Decoder[RfWire] = Decoder.forProduct2("material", "length")(RfWire(_, _))
