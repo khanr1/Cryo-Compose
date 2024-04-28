@@ -1,11 +1,11 @@
 package com.khanr1
 package cryocompose
 package services
-package wiring
+package wiring.rf
 
 import com.khanr1.cryocompose.wiring.rf.RfConnectorParam
 import com.khanr1.cryocompose.wiring.rf.RfConnector
-import com.khanr1.cryocompose.repositories.wiring.RfConnectorReposit
+import repositories.wiring.rf.RfConnectorRepository
 
 /** A trait representing a service for managing RF connectors.
   *
@@ -39,7 +39,7 @@ trait RfConnectorService[F[_], RfConnectorID, CategoryID, TagID]:
 
 object RfConnectorService:
   def make[F[_], RfConnectorID, CategoryID, TagID](
-    repo: RfConnectorReposit[F, RfConnectorID, CategoryID, TagID]
+    repo: RfConnectorRepository[F, RfConnectorID, CategoryID, TagID]
   ): RfConnectorService[F, RfConnectorID, CategoryID, TagID] =
     new RfConnectorService[F, RfConnectorID, CategoryID, TagID]:
       override def create(connector: RfConnectorParam[CategoryID, TagID])
