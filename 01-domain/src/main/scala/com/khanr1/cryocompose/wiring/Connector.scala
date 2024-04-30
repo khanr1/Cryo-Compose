@@ -58,9 +58,11 @@ object Gender:
     case Female => true
     case Male => false
   }(if _ then Female else Male)
-  given Encoder[Gender] = Encoder.forProduct1("gender")(g =>
-    g match
-      case Male => "Male"
-      case Female => "Female"
-  )
-  given Decoder[Gender] = Decoder.forProduct1("gender")(Gender.valueOf(_))
+  given Encoder[Gender] = Encoder
+    .encodeString
+    .contramap(g =>
+      g match
+        case Male => "Male"
+        case Female => "Female"
+    )
+  given Decoder[Gender] = Decoder.decodeString.map(Gender.valueOf(_))
