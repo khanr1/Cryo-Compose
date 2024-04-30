@@ -47,3 +47,38 @@ object RfAssembly:
     Decoder.forProduct4("id", "connectors", "line", "tag")(
       RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](_, _, _, _)
     )
+  given encoder[RfAssemblyID: Encoder, RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
+    : Encoder[RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID]] =
+    Encoder.forProduct4("id", "connectors", "line", "tag")(a =>
+      (a.id, a.connectors, a.line, a.tags)
+    )
+
+/** Used to create RFAssemblyRF assembly
+  *
+  * @param connectors
+  *   the RF connector composing the assembly
+  * @param lines
+  *   the line composing the assembly
+  */
+final case class RfAssemblyParam[RfConnectorID, CategoryID, TagID](
+  connectors: List[RfConnector[RfConnectorID, CategoryID, TagID]],
+  line: RfLine[RfConnectorID, CategoryID, TagID],
+  tags: Set[TagID],
+) extends WiringAssembly(connectors, List(line))
+
+object RfAssemblyParam:
+  given show[RfConnectorID, CategoryID, TagID]
+    : Show[RfAssemblyParam[RfConnectorID, CategoryID, TagID]] =
+    Show.fromToString
+  given decoder[
+    RfAssemblyParamID: Decoder,
+    RfConnectorID: Decoder,
+    CategoryID: Decoder,
+    TagID: Decoder,
+  ]: Decoder[RfAssemblyParam[RfConnectorID, CategoryID, TagID]] =
+    Decoder.forProduct3("connectors", "line", "tag")(
+      RfAssemblyParam[RfConnectorID, CategoryID, TagID](_, _, _)
+    )
+  given encoder[RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
+    : Encoder[RfAssemblyParam[RfConnectorID, CategoryID, TagID]] =
+    Encoder.forProduct3("connectors", "line", "tag")(a => (a.connectors, a.line, a.tags))
