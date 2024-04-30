@@ -24,6 +24,10 @@ final case class RfWire(material: RFmaterial, length: Length | StageLength)
     material.show + " " + lengthDescription
 
 object RfWire:
+  def generateAll: Set[RfWire] = for
+    length <- StageLength.values.toSet
+    material <- RFmaterial.values.toSet
+  yield RfWire(material, length)
   given show: Show[RfWire] = Show.fromToString
   given encoder: Encoder[RfWire] =
     Encoder.forProduct2("material", "length")(w => (w.material, w.length))
