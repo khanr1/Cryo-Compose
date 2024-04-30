@@ -11,9 +11,11 @@ enum RFmaterial extends Material:
 
 object RFmaterial:
   given show: Show[RFmaterial] = Show.fromToString
-  given Encoder[RFmaterial] = Encoder.forProduct1("rf_material")(m =>
-    m match
-      case SCuNi => "SCuNi"
-      case NbTi => "NbTi"
-  )
-  given Decoder[RFmaterial] = Decoder.forProduct1("rf_material")(RFmaterial.valueOf(_))
+  given Encoder[RFmaterial] = Encoder
+    .encodeString
+    .contramap(m =>
+      m match
+        case SCuNi => "SCuNi"
+        case NbTi => "NbTi"
+    )
+  given Decoder[RFmaterial] = Decoder.decodeString.map(RFmaterial.valueOf(_))
