@@ -1,6 +1,10 @@
 # macOS
 .DS_Store
 
+
+
+#generate Js file
+04-delivery/src/main/resources/*.js
 # sbt specific
 dist/*
 target/

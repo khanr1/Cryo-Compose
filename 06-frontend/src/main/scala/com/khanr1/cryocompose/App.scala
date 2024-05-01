@@ -15,8 +15,13 @@ import scala.concurrent.Future
 import cryocompose.components.navigation.navigationBar
 import cryocompose.utils.Tree
 import concurrent.ExecutionContext.Implicits.global
+import com.khanr1.cryocompose.wiring.rf.RfAssembly
+import com.khanr1.cryocompose.components.product.productCard
 object App:
   given entityDecoder: EntityDecoder[IO, List[Category[Int]]] =
+    jsonOf
+
+  given EntityDecoder[IO, List[RfAssembly[Int, Int, Int, Int]]] =
     jsonOf
 
   val client = FetchClientBuilder[IO].create
@@ -24,6 +29,12 @@ object App:
   val categories = client
     .expect[List[Category[Int]]](uri"http://localhost:8080/categories")
     .unsafeToFuture()
+  val rfAssemply = client
+    .expect[List[RfAssembly[Int, Int, Int, Int]]](uri"http://localhost:8080/rf/rfassembly")
+    .unsafeToFuture()
 
   def main(args: Array[String]): Unit =
-    for c <- categories yield render(containerNode, navigationBar(Tree.construct(c)))
+    for
+      c <- categories
+      rf <- rfAssemply
+    yield render(containerNode, productCard(rf.head)) // render(containerNode, navigationBar(Tree.construct(c)))

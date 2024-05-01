@@ -27,15 +27,16 @@ final case class RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](
        with Product[RfAssemblyID, CategoryID, TagID]:
   override val code: ProductCode =
     val connectorsCode = connectors.map(_.code.show).mkString("(", "-", ")")
-    val lineCode = line.toString()
+    val lineCode = s"${line.wire.material}+${line.wire.length}"
     val full = connectorsCode + "-" + lineCode
     ProductCode.applyUnsafe(full)
   override val productDescription: ProductDescription =
-    val text = s"Semi rigid ${connectors.map(_.name).mkString("-")} ${line.wire.description}"
+    val text =
+      s"Semi-rigid coaxial line ${connectors.map(_.name).mkString("-")} ${line.wire.description}"
     ProductDescription.applyUnsafe(text)
   override val productID: RfAssemblyID = id
   override val productName: ProductName =
-    val text = s"${line.wire.material} ${line.wire.length}"
+    val text = s"${line.wire.material} semi-rigid coaxial line  (${line.wire.length})"
     ProductName.applyUnsafe(text)
   override val categoryID: CategoryID = category
   override val tagsID: Set[TagID] = tags
