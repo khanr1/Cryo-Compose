@@ -19,7 +19,7 @@ object RfAssemblyInMemoryRepository:
     override def create(element: RfAssemblyParam[Int, Int, Int])
       : F[RfAssembly[Int, Int, Int, Int]] =
       nextInt
-        .map(RfAssembly(_, element.connectors, element.line, element.tags))
+        .map(RfAssembly(_, element.connectors, element.line, element.category, element.tags))
         .flatMap(cat => state.modify(s => (s :+ cat) -> cat))
 
     override def delete(id: Int): F[Unit] = state.get.flatMap { element =>

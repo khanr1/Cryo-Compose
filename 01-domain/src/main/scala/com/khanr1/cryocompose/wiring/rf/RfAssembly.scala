@@ -21,6 +21,7 @@ final case class RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](
   id: RfAssemblyID,
   connectors: List[RfConnector[RfConnectorID, CategoryID, TagID]],
   line: RfLine[RfConnectorID, CategoryID, TagID],
+  category: CategoryID,
   tags: Set[TagID],
 ) extends WiringAssembly(connectors, List(line))
        with Product[RfAssemblyID, CategoryID, TagID]:
@@ -36,7 +37,7 @@ final case class RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](
   override val productName: ProductName =
     val text = s"${line.wire.material} ${line.wire.length}"
     ProductName.applyUnsafe(text)
-  override val categoryID: CategoryID = categoryID
+  override val categoryID: CategoryID = category
   override val tagsID: Set[TagID] = tags
 
 object RfAssembly:
@@ -44,13 +45,13 @@ object RfAssembly:
     : Show[RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID]] = Show.fromToString
   given decoder[RfAssemblyID: Decoder, RfConnectorID: Decoder, CategoryID: Decoder, TagID: Decoder]
     : Decoder[RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID]] =
-    Decoder.forProduct4("id", "connectors", "line", "tag")(
-      RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](_, _, _, _)
+    Decoder.forProduct5("id", "connectors", "line", "category", "tag")(
+      RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](_, _, _, _, _)
     )
   given encoder[RfAssemblyID: Encoder, RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
     : Encoder[RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID]] =
-    Encoder.forProduct4("id", "connectors", "line", "tag")(a =>
-      (a.id, a.connectors, a.line, a.tags)
+    Encoder.forProduct5("id", "connectors", "line", "category", "tag")(a =>
+      (a.id, a.connectors, a.line, a.category, a.tags)
     )
 
 /** Used to create RFAssemblyRF assembly
@@ -63,6 +64,7 @@ object RfAssembly:
 final case class RfAssemblyParam[RfConnectorID, CategoryID, TagID](
   connectors: List[RfConnector[RfConnectorID, CategoryID, TagID]],
   line: RfLine[RfConnectorID, CategoryID, TagID],
+  category: CategoryID,
   tags: Set[TagID],
 ) extends WiringAssembly(connectors, List(line))
 
@@ -70,15 +72,13 @@ object RfAssemblyParam:
   given show[RfConnectorID, CategoryID, TagID]
     : Show[RfAssemblyParam[RfConnectorID, CategoryID, TagID]] =
     Show.fromToString
-  given decoder[
-    RfAssemblyParamID: Decoder,
-    RfConnectorID: Decoder,
-    CategoryID: Decoder,
-    TagID: Decoder,
-  ]: Decoder[RfAssemblyParam[RfConnectorID, CategoryID, TagID]] =
-    Decoder.forProduct3("connectors", "line", "tag")(
-      RfAssemblyParam[RfConnectorID, CategoryID, TagID](_, _, _)
+  given decoder[RfConnectorID: Decoder, CategoryID: Decoder, TagID: Decoder]
+    : Decoder[RfAssemblyParam[RfConnectorID, CategoryID, TagID]] =
+    Decoder.forProduct4("connectors", "line", "category", "tag")(
+      RfAssemblyParam[RfConnectorID, CategoryID, TagID](_, _, _, _)
     )
   given encoder[RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
     : Encoder[RfAssemblyParam[RfConnectorID, CategoryID, TagID]] =
-    Encoder.forProduct3("connectors", "line", "tag")(a => (a.connectors, a.line, a.tags))
+    Encoder.forProduct4("connectors", "line", "category", "tag")(a =>
+      (a.connectors, a.line, a.category, a.tags)
+    )
