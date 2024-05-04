@@ -11,6 +11,7 @@ def tableHeader[A, B, C] =
   thead(
     tr(
       for header <- Product.getAttributesName
-      yield th(header)
+      yield th(header),
+      th("details"),
     )
   )

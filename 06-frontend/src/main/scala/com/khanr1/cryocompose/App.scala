@@ -4,6 +4,7 @@ package cryocompose
 import cats.effect.IO
 import cats.effect.unsafe.implicits.*
 import com.raquo.laminar.api.L.{ *, given }
+import io.circe.syntax.*
 import org.http4s.*
 import org.http4s.circe.*
 import org.http4s.dom.FetchClientBuilder
@@ -16,10 +17,9 @@ import cryocompose.components.navigation.navigationBar
 import cryocompose.utils.Tree
 import concurrent.ExecutionContext.Implicits.global
 import com.khanr1.cryocompose.wiring.rf.RfAssembly
-import com.khanr1.cryocompose.components.product.productCard
-import com.khanr1.cryocompose.components.product.productCardBoard
-import com.khanr1.cryocompose.components.crudProductTable.tableHeader
-import com.khanr1.cryocompose.components.crudProductTable.mainTable
+import com.khanr1.cryocompose.components.product.*
+import com.khanr1.cryocompose.components.crudProductTable.*
+
 object App:
   given entityDecoder: EntityDecoder[IO, List[Category[Int]]] =
     jsonOf
@@ -33,7 +33,6 @@ object App:
   val categories = client
     .expect[List[Category[Int]]](uri"http://localhost:8080/categories")
     .unsafeToFuture()
-
   val rfAssemply = client
     .expect[List[RfAssembly[Int, Int, Int, Int]]](uri"http://localhost:8080/rf/rfassembly")
     .unsafeToFuture()
@@ -42,4 +41,7 @@ object App:
     for
       c <- categories
       rf <- rfAssemply
-    yield render(containerNode, mainTable(rf))
+    yield render(
+      containerNode,
+      div(navigationBar(Tree.construct(c)), headerMain("CryoCompose"), mainTable(rf)),
+    )

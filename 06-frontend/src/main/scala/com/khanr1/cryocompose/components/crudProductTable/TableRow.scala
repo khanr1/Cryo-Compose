@@ -12,4 +12,13 @@ def tableRow[ProductID, CategoryID, TagID](product: Product[ProductID, CategoryI
     td(product.productName.value.show),
     td(product.categoryID.toString()),
     td(product.tagsID.mkString("[", ",", "]")),
+    td(
+      button(
+        typ := "button",
+        cls := "btn btn--outline-secondary",
+        dataAttr("bs-toggle") := "modal",
+        dataAttr("bs-target") := "#exampleModal",
+        i(cls := "bi bi-info-square-fill"),
+      )
+    ),
   )
