@@ -17,6 +17,9 @@ import cryocompose.utils.Tree
 import concurrent.ExecutionContext.Implicits.global
 import com.khanr1.cryocompose.wiring.rf.RfAssembly
 import com.khanr1.cryocompose.components.product.productCard
+import com.khanr1.cryocompose.components.product.productCardBoard
+import com.khanr1.cryocompose.components.crudProductTable.tableHeader
+import com.khanr1.cryocompose.components.crudProductTable.mainTable
 object App:
   given entityDecoder: EntityDecoder[IO, List[Category[Int]]] =
     jsonOf
@@ -26,9 +29,11 @@ object App:
 
   val client = FetchClientBuilder[IO].create
   val containerNode = dom.document.querySelector("#appContainer")
+
   val categories = client
     .expect[List[Category[Int]]](uri"http://localhost:8080/categories")
     .unsafeToFuture()
+
   val rfAssemply = client
     .expect[List[RfAssembly[Int, Int, Int, Int]]](uri"http://localhost:8080/rf/rfassembly")
     .unsafeToFuture()
@@ -37,4 +42,4 @@ object App:
     for
       c <- categories
       rf <- rfAssemply
-    yield render(containerNode, productCard(rf.head)) // render(containerNode, navigationBar(Tree.construct(c)))
+    yield render(containerNode, mainTable(rf))

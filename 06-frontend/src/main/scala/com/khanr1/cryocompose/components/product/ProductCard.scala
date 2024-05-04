@@ -15,7 +15,18 @@ def productCard[ProductID, CategoryID, TagID](product: Product[ProductID, Catego
   div(
     cls := "card",
     styleAttr := "width: 18rem;",
-    img(src := "...", cls := "card-img-top", alt := "..."),
+    svg.svg(
+      svg.cls := "bd-placeholder-img card-img-top",
+      svg.width := "100%",
+      svg.height := "225",
+      svg.xmlns := "http://www.w3.org/2000/svg",
+      svg.role := "img",
+      aria.label := "Placeholder: Thumbnail",
+      svg.preserveAspectRatio := "xMidYMid slice",
+      svg.titleTag("Placeholder"),
+      svg.rect(svg.width := "100%", svg.height := "100%", svg.fill := "#55595c"),
+      svg.text(svg.x := "50%", svg.y := "50%", svg.fill := "#eceeef", svg.dy := ".3em", "Image"),
+    ),
     div(
       cls := "card-body",
       h5(cls := "card-title", product.productName.value),
