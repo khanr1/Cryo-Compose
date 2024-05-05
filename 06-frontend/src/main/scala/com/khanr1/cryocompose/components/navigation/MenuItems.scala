@@ -8,8 +8,9 @@ import cats.syntax.all.*
 import com.raquo.laminar.api.L.{ *, given }
 import utils.{ HasHierarchy, Tree }
 
-def menuItems[ID, Entry <: HasHierarchy[ID]: Show](
-  trees: List[Tree[ID, Entry]]
+def menuItems[ID](
+  trees: List[Tree[ID, Category[ID]]],
+  linkID: Var[String],
 ) =
   ul(
     cls := "navbar-nav me-auto mb-2 mb-lg-0",
@@ -18,7 +19,12 @@ def menuItems[ID, Entry <: HasHierarchy[ID]: Show](
       if tree.children.isEmpty then
         li(
           cls := "nav-item",
-          a(cls := "nav-link", href := "#", tree.entry.show),
+          a(
+            cls := "nav-link",
+            href := "#",
+            tree.entry.name.value.show,
+            onClick.mapTo(tree.entry.name.value.show) --> linkID,
+          ),
         )
       else
         li(
@@ -32,6 +38,6 @@ def menuItems[ID, Entry <: HasHierarchy[ID]: Show](
             href := "#",
             tree.entry.show,
           ),
-          dropDown(tree.children),
+          dropDown(tree.children, linkID),
         ),
   )

@@ -5,6 +5,7 @@ import cats.effect.IO
 import cats.effect.unsafe.implicits.*
 import com.raquo.laminar.api.L.{ *, given }
 import io.circe.syntax.*
+import io.circe.parser.decode
 import org.http4s.*
 import org.http4s.circe.*
 import org.http4s.dom.FetchClientBuilder
@@ -37,11 +38,17 @@ object App:
     .expect[List[RfAssembly[Int, Int, Int, Int]]](uri"http://localhost:8080/rf/rfassembly")
     .unsafeToFuture()
 
+  val LinkID = Var("")
+
   def main(args: Array[String]): Unit =
     for
       c <- categories
       rf <- rfAssemply
     yield render(
       containerNode,
-      div(navigationBar(Tree.construct(c)), headerMain("CryoCompose"), mainTable(rf)),
+      div(
+        navigationBar(Tree.construct(c), LinkID),
+        headerMain("CryoCompose", LinkID),
+        mainTable(rf),
+      ),
     )
