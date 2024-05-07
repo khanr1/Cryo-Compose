@@ -31,24 +31,43 @@ object App:
   val client = FetchClientBuilder[IO].create
   val containerNode = dom.document.querySelector("#appContainer")
 
-  val categories = client
-    .expect[List[Category[Int]]](uri"http://localhost:8080/categories")
-    .unsafeToFuture()
   val rfAssemply = client
     .expect[List[RfAssembly[Int, Int, Int, Int]]](uri"http://localhost:8080/rf/rfassembly")
     .unsafeToFuture()
+
+  val fetchedCategory = FetchStream
+    .get("http://localhost:8080/categories")
+    .map(response => response.text)
+    .map(data => decode[List[Category[Int]]](data))
+    .collect {
+      case Right(categories) => categories
+    }
+
+  def renderCategories =
+    div(
+      children <-- fetchedCategory.map { categories =>
+        categories.map { category =>
+          ul(
+            li(category.description.value.show)
+          )
+        }
+      }
+    )
 
   val LinkID = Var("")
 
   def main(args: Array[String]): Unit =
     for
-      c <- categories
-      rf <- rfAssemply
+        // c <- categories
+        rf <- rfAssemply
     yield render(
       containerNode,
       div(
-        navigationBar(Tree.construct(c), LinkID),
+        child <-- fetchedCategory.map(categories =>
+          navigationBar(Tree.construct(categories), LinkID)
+        ),
         headerMain("CryoCompose", LinkID),
         mainTable(rf),
+        div("hello now it should show that"),
       ),
     )
