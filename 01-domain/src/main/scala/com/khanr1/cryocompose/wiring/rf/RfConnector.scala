@@ -12,6 +12,7 @@ import io.github.iltotore.iron.circe.given
 
 import squants.electro.ElectricalResistance
 import squants.time.Frequency
+import squants.time.Hertz
 
 /** A final case class representing an RF connector.
   *
@@ -30,6 +31,7 @@ final case class RfConnector[RfConnectorID, CategoryID, TagID](
   id: RfConnectorID,
   name: ConnectorName,
   gender: Gender,
+  maxFrequency: Frequency,
   category: CategoryID,
   tags: Set[TagID],
 ) extends Connector(name, gender, numberPin = NumberOfPin(1))
@@ -53,13 +55,13 @@ object RfConnector:
     Eq.fromUniversalEquals
   given encoder[RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
     : Encoder[RfConnector[RfConnectorID, CategoryID, TagID]] =
-    Encoder.forProduct5("id", "name", "gender", "category", "tags")(r =>
-      (r.id, r.name, r.gender, r.category, r.tags)
+    Encoder.forProduct6("id", "name", "gender", "max frequency", "category", "tags")(r =>
+      (r.id, r.name, r.gender, r.maxFrequency, r.category, r.tags)
     )
   given decoder[RfConnectorID: Decoder, CategoryID: Decoder, TagID: Decoder]
     : Decoder[RfConnector[RfConnectorID, CategoryID, TagID]] =
-    Decoder.forProduct5("id", "name", "gender", "category", "tags")(
-      rf.RfConnector[RfConnectorID, CategoryID, TagID](_, _, _, _, _)
+    Decoder.forProduct6("id", "name", "gender", "max frequency", "category", "tags")(
+      rf.RfConnector[RfConnectorID, CategoryID, TagID](_, _, _, _, _, _)
     )
 
 /** A final case class representing parameters used to create an RF connector.
@@ -74,6 +76,7 @@ object RfConnector:
 final case class RfConnectorParam[CategoryID, TagID](
   name: ConnectorName,
   gender: Gender,
+  maxFrequency: Frequency,
   category: CategoryID,
   tags: Set[TagID],
 )
@@ -82,10 +85,10 @@ object RfConnectorParam:
   given show[CategoryID, TagID]: Show[RfConnectorParam[CategoryID, TagID]] = Show.fromToString
   given eq[CategoryID, TagID]: Eq[RfConnectorParam[CategoryID, TagID]] = Eq.fromUniversalEquals
   given encoder[CategoryID: Encoder, TagID: Encoder]: Encoder[RfConnectorParam[CategoryID, TagID]] =
-    Encoder.forProduct4("name", "gender", "category", "tags")(r =>
-      (r.name, r.gender, r.category, r.tags)
+    Encoder.forProduct5("name", "gender", "max frequency", "category", "tags")(r =>
+      (r.name, r.gender, r.maxFrequency, r.category, r.tags)
     )
   given decoder[CategoryID: Decoder, TagID: Decoder]: Decoder[RfConnectorParam[CategoryID, TagID]] =
-    Decoder.forProduct4("name", "gender", "category", "tags")(
-      rf.RfConnectorParam[CategoryID, TagID](_, _, _, _)
+    Decoder.forProduct5("name", "gender", "max frequency", "category", "tags")(
+      rf.RfConnectorParam[CategoryID, TagID](_, _, _, _, _)
     )

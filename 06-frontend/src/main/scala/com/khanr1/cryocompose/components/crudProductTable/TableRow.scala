@@ -48,7 +48,7 @@ def tableRow[ProductID, CategoryID, TagID](product: Product[ProductID, CategoryI
           ),
           div(
             cls := "modal-body",
-            p(product.productDescription.value.toString()),
+            p(product.productDescription.value),
           ),
           div(
             cls := "modal-footer",

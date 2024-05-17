@@ -12,6 +12,6 @@ def tableHeader[A, B, C] =
     tr(
       for header <- Product.getAttributesName
       yield th(header),
-      th("details"),
+      th("Details"),
     )
   )

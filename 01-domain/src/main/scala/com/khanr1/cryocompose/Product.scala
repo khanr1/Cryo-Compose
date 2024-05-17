@@ -27,7 +27,7 @@ trait Product[ProductID, CategoryID, TagID]:
 
 object Product:
   def getAttributesName: List[String] =
-    List("Product id", "Product code", "Product name", "Category ID", "Tags ID")
+    List("Product ID", "Product code", "Product name", "Category ID", "Tags ID")
 
 /** A refined type representing the name of a product. */
 type ProductNameR =

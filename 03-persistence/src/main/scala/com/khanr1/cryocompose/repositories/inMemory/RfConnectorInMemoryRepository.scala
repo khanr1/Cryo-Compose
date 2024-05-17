@@ -17,7 +17,16 @@ object RfConnectorInMemoryRepository:
       .map(connectors => if connectors.isEmpty then 1 else connectors.map(_.categoryID).max + 1)
     override def create(connector: RfConnectorParam[Int, Int]): F[RfConnector[Int, Int, Int]] =
       nextInt
-        .map(RfConnector(_, connector.name, connector.gender, connector.category, connector.tags))
+        .map(
+          RfConnector(
+            _,
+            connector.name,
+            connector.gender,
+            connector.maxFrequency,
+            connector.category,
+            connector.tags,
+          )
+        )
         .flatMap(cat => state.modify(s => (s :+ cat) -> cat))
 
     override def delete(id: Int): F[Unit] = state.get.flatMap { connectors =>

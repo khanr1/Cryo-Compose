@@ -4,6 +4,7 @@ package cryocompose
 import io.github.iltotore.iron.autoRefine
 import com.khanr1.cryocompose.wiring.rf.*
 import com.khanr1.cryocompose.wiring.*
+import squants.time.Gigahertz
 
 object InitialState:
   val tagState: Vector[Tag[Int]] = Vector(
@@ -33,7 +34,7 @@ object InitialState:
   )
 
   val rfConnectorState: Vector[RfConnector[Int, Int, Int]] = Vector(
-    RfConnector(1, ConnectorName("SMA"), Gender.Female, 2, Set(2))
+    RfConnector(1, ConnectorName("SMA"), Gender.Female, Gigahertz(18), 2, Set(2))
   )
 
   val rfAssemblyState: Vector[RfAssembly[Int, Int, Int, Int]] =
