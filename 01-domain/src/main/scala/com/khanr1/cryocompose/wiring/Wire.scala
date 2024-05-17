@@ -9,6 +9,7 @@ import io.circe.Json
 import io.circe.HCursor
 import io.circe.DecodingFailure
 import squants.space.Millimeters
+import cats.Show
 
 trait Material
 
@@ -31,3 +32,9 @@ given decoder: Decoder[Length | StageLength] = new Decoder[Length | StageLength]
     if c.value.isNumber then Right(Millimeters(c.value.asNumber.get.toDouble))
     else if c.value.isString then Right(StageLength.valueOf(c.value.asString.get))
     else Left(DecodingFailure("fail", c.history))
+
+given show: Show[Length | StageLength] = Show.show(s =>
+  s match
+    case x: Length => x.toString
+    case y: StageLength => y.toString().replace("_", "-")
+)

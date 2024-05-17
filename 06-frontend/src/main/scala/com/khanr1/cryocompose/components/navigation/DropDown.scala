@@ -9,8 +9,9 @@ import com.raquo.laminar.api.L.*
 import com.raquo.laminar.nodes.ReactiveHtmlElement
 import org.scalajs.dom
 
-def dropDown[ID, Entry <: HasHierarchy[ID]: Show](
-  trees: List[Tree[ID, Entry]]
+def dropDown[ID](
+  trees: List[Tree[ID, Category[ID]]],
+  linkID: Var[String],
 ): ReactiveHtmlElement[dom.html.UList] =
   ul(
     cls := "dropdown-menu",
@@ -21,7 +22,9 @@ def dropDown[ID, Entry <: HasHierarchy[ID]: Show](
           a(
             cls := "dropdown-item",
             href := "#",
+            dataAttr("description") := tree.entry.description.show,
             tree.entry.show,
+            onClick.mapTo(tree.entry.name.value.show) --> linkID,
           )
         )
       else
@@ -36,6 +39,6 @@ def dropDown[ID, Entry <: HasHierarchy[ID]: Show](
             aria.expanded := false,
             tree.entry.show,
           ),
-          dropDown(tree.children),
+          dropDown(tree.children, linkID),
         ),
   )

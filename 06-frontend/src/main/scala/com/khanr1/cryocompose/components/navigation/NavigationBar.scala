@@ -8,10 +8,13 @@ import com.raquo.laminar.api.L.{ *, given }
 import com.raquo.laminar.defs.attrs.AriaAttrs
 import com.raquo.laminar.keys.AriaAttr
 import utils.{ HasHierarchy, Tree }
+import org.scalajs.dom.HTMLDivElement
+import com.raquo.laminar.nodes.ReactiveHtmlElement
 
-def navigationBar[ID, Entry <: HasHierarchy[ID]: Show](
-  trees: List[Tree[ID, Entry]]
-) =
+def navigationBar[ID](
+  trees: List[Tree[ID, Category[ID]]], // here replace Category[ID] with enty to make tree generic
+  linkID: Var[String],
+): ReactiveHtmlElement[HTMLDivElement] =
   div(
     cls := ("navbar", " navbar-expand-lg", " bg-body-tertiary"),
     div(
@@ -21,7 +24,7 @@ def navigationBar[ID, Entry <: HasHierarchy[ID]: Show](
       div(
         cls := ("collapse", "navbar-collapse"),
         idAttr := "navbarSupportedContent",
-        menuItems(trees),
+        menuItems(trees, linkID),
       ),
     ),
   )

@@ -25,6 +25,10 @@ trait Product[ProductID, CategoryID, TagID]:
   /** The set of identifiers of tags associated with the product. */
   val tagsID: Set[TagID]
 
+object Product:
+  def getAttributesName: List[String] =
+    List("Product ID", "Product code", "Product name", "Category ID", "Tags ID")
+
 /** A refined type representing the name of a product. */
 type ProductNameR =
   DescribedAs[Not[Empty], "The name of a product cannot be an empty"]

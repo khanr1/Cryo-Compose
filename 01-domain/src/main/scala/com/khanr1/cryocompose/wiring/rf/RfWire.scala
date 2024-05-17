@@ -18,12 +18,20 @@ final case class RfWire(material: RFmaterial, length: Length | StageLength)
     extends Wire(material, length):
   def description: String =
     val lengthDescription = length match
-      case x: Length => x.value.show
-      case x: StageLength => x.show
+      case x: Length => material.show + " " + x.value.show
+      case x: StageLength => material.show + " " + x.show
 
     material.show + " " + lengthDescription
 
 object RfWire:
+  /** method to return all possible RF wire with all the staged length
+    *
+    * @return
+    */
+  def generateAll: Set[RfWire] = for
+    length <- StageLength.values.toSet
+    material <- RFmaterial.values.toSet
+  yield RfWire(material, length)
   given show: Show[RfWire] = Show.fromToString
   given encoder: Encoder[RfWire] =
     Encoder.forProduct2("material", "length")(w => (w.material, w.length))
