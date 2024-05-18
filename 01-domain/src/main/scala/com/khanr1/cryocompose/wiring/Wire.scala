@@ -38,3 +38,12 @@ given show: Show[Length | StageLength] = Show.show(s =>
     case x: Length => x.toString
     case y: StageLength => y.toString().replace("_", "-")
 )
+
+given Ordering[Length | StageLength] with
+  def compare(x: Length | StageLength, y: Length | StageLength): Int = (x, y) match
+    case (xLength: Length, yLength: Length) =>
+      summon[Ordering[Length]].compare(xLength, yLength)
+    case (xStage: StageLength, yStage: StageLength) =>
+      summon[Ordering[StageLength]].compare(xStage, yStage)
+    case (xLength: Length, _) => -1 // Lengths come before StageLengths
+    case (_, yLength: Length) => 1 // StageLengths come after Lengths

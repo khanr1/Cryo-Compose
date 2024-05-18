@@ -23,3 +23,14 @@ object StageLength:
         case Still_CP => "from Still flange to Cold Plate"
         case CP_MXC => "from Cold Plate to Mixing Chamber flange"
   )
+  given Ordering[StageLength] with
+    def compare(x: StageLength, y: StageLength): Int =
+      import StageLength.*
+      val order = Map(
+        RT_50K -> 0,
+        `50K_4K` -> 1,
+        `4K_Still` -> 2,
+        Still_CP -> 3,
+        CP_MXC -> 4,
+      )
+      order(x) compare order(y)

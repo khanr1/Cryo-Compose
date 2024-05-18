@@ -5,6 +5,7 @@ package inMemory
 
 import cats.MonadThrow
 import cats.effect.kernel.Ref
+import com.khanr1.cryocompose.wiring.given
 import com.khanr1.cryocompose.wiring.rf.RfAssemblyParam
 import com.khanr1.cryocompose.wiring.rf.RfAssembly
 import com.khanr1.cryocompose.repositories.wiring.rf.RfAssemblyRepository
@@ -35,4 +36,5 @@ object RfAssemblyInMemoryRepository:
 
     }
 
-    override def findAll(): F[Vector[RfAssembly[Int, Int, Int, Int]]] = state.get
+    override def findAll(): F[Vector[RfAssembly[Int, Int, Int, Int]]] =
+      state.get.map(_.sortBy(_.line.wire.length))
