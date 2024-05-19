@@ -6,8 +6,7 @@ package inMemory
 import cats.MonadThrow
 import cats.effect.kernel.Ref
 import com.khanr1.cryocompose.wiring.given
-import com.khanr1.cryocompose.wiring.rf.RfAssemblyParam
-import com.khanr1.cryocompose.wiring.rf.RfAssembly
+import com.khanr1.cryocompose.wiring.rf.{ RfAssemblyParam, RfAssembly }
 import com.khanr1.cryocompose.repositories.wiring.rf.RfAssemblyRepository
 
 object RfAssemblyInMemoryRepository:
