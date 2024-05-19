@@ -31,7 +31,13 @@ object InitialState:
       CategoryDescription("This category regroup all the DC lines"),
       Some(1),
     ),
-  )
+    Category(
+      4,
+      CategoryName("RF Sets"),
+      CategoryDescription("This category regroup all the RF Sets"),
+      Some(1),
+    ),
+  ).sortBy(_.name.toString()).reverse
 
   val rfConnectorState: Vector[RfConnector[Int, Int, Int]] = Vector(
     RfConnector(1, ConnectorName("SMA"), Gender.Female, Gigahertz(18), 2, Set(2))
