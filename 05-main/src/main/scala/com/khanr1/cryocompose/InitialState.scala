@@ -60,3 +60,7 @@ object InitialState:
         Set(1, 2),
       )
     )
+
+  val rfSetState: Vector[RfSet[Int, Int, Int, Int]] = Vector(
+    RfSet(1, rfAssemblyState.filter(x => (x.id == 10) || (x.id == 2)).toList, 2, Set(1, 2))
+  )
