@@ -6,11 +6,8 @@ import cats.derived.*
 import cats.Show
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
-import io.circe.Encoder
-import io.circe.generic.auto.*
 
 import monocle.Iso
-import io.circe.Decoder
 
 /** Represents a connector with a name, gender, and number of pins.
   * @param name

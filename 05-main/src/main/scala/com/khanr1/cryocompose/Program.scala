@@ -17,10 +17,12 @@ object Program:
       catRef <- Ref.of[F, Vector[Category[Int]]](InitialState.catState)
       conRef <- Ref.of[F, Vector[RfConnector[Int, Int, Int]]](InitialState.rfConnectorState)
       rfWire <- Ref.of[F, Vector[RfAssembly[Int, Int, Int, Int]]](InitialState.rfAssemblyState)
+      rfSet <- Ref.of[F, Vector[RfSet[Int, Int, Int, Int]]](InitialState.rfSetState)
       tagController <- TagDependencyGraph.make(tagRef)
       categoryController <- CategoryDependencyGraph.make(catRef)
       rfConnectorController <- RfConnectorDependencyGraph.make(conRef)
       rfAssemblyController <- RfAssemblyDependencyGraph.make(rfWire)
+      rfSetController <- RfSetDependencyGraph.make(rfSet)
       mainController <- MainDependencyGraph.make
       _ <- HttpServer
         .make(
@@ -29,6 +31,7 @@ object Program:
             rfConnectorController,
             tagController,
             categoryController,
+            rfSetController,
             mainController,
           )
         )
