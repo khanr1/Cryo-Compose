@@ -35,7 +35,7 @@ final case class RfSet[RfAssemblyID, RfConnectorID, CategoryID, TagID](
 
   /** The code representing the unique lengths of wires in the RF set. */
   val lengthCode: String =
-    val list = rfAssemblies.map(_.line.wire.length).sorted.flatMap(s => s.show.split("_"))
+    val list = rfAssemblies.map(_.line.wire.length).sorted
     val occurrences = list.groupBy(identity).view.mapValues(_.size).toMap
     val uniqueElements = list.filter(element => occurrences(element) == 1)
     uniqueElements.mkString("-")
