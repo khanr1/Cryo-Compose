@@ -5,28 +5,32 @@ package crudProductTable
 
 import com.raquo.laminar.api.L.{ *, given }
 
-def tableRow[ProductID, CategoryID, TagID](product: Product[ProductID, CategoryID, TagID]) =
+def tableRow[ProductID, CategoryID, TagID](
+  productID: ProductID,
+  product: Product[ProductID, CategoryID, TagID],
+  signal: Signal[Product[ProductID, CategoryID, TagID]],
+): HtmlElement =
   tr(
-    td(product.productID.toString()),
-    td(product.code.value.show),
-    td(product.productName.value.show),
-    td(product.categoryID.toString()),
-    td(product.tagsID.mkString("[", ",", "]")),
+    td(productID.toString()),
+    td(child.text <-- signal.map(_.code.value.show)),
+    td(child.text <-- signal.map(_.productName.value.show)),
+    td(child.text <-- signal.map(_.categoryID.toString())),
+    td(child.text <-- signal.map(_.tagsID.mkString("[", ",", "]"))),
     td(
       button(
         typ := "button",
         cls := "btn btn--outline-secondary",
         dataAttr("bs-toggle") := "modal",
-        dataAttr("bs-target") := s"#${product.productID.toString()}",
+        dataAttr("bs-target") := s"#${productID.toString()}",
         i(cls := "bi bi-info-square-fill"),
       )
     ),
     // Modal
     div(
       cls := "modal fade",
-      idAttr := product.productID.toString(),
+      idAttr := productID.toString(),
       tabIndex := -1,
-      aria.labelledBy(s"label${product.productID.toString()}"),
+      aria.labelledBy(s"label${productID.toString()}"),
       aria.hidden := true,
       div(
         cls := "modal-dialog",
@@ -37,7 +41,7 @@ def tableRow[ProductID, CategoryID, TagID](product: Product[ProductID, CategoryI
             h1(
               cls := "modal-title fs-5",
               idAttr := "staticBackdropLabel",
-              product.productName.toString(),
+              child.text <-- signal.map(_.productName.toString()),
             ),
             button(
               typ := "button",
@@ -48,7 +52,7 @@ def tableRow[ProductID, CategoryID, TagID](product: Product[ProductID, CategoryI
           ),
           div(
             cls := "modal-body",
-            pre(cls := "text-wrap", product.productDescription.value),
+            pre(cls := "text-wrap", child.text <-- signal.map(_.productDescription.value)),
           ),
           div(
             cls := "modal-footer",

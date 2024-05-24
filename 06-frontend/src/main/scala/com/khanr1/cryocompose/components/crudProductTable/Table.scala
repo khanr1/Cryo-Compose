@@ -5,12 +5,13 @@ package crudProductTable
 
 import com.raquo.laminar.api.L.{ *, given }
 
-def mainTable[ProductID, CategoryID, TagID](products: List[Product[ProductID, CategoryID, TagID]]) =
+def mainTable[ProductID, CategoryID, TagID](
+  productStream: EventStream[List[Product[ProductID, CategoryID, TagID]]]
+) =
   table(
     cls := "table table-striped",
     tableHeader,
     tbody(
-      for product <- products
-      yield tableRow(product)
+      children <-- productStream.split(_.productID)(tableRow[ProductID, CategoryID, TagID])
     ),
   )

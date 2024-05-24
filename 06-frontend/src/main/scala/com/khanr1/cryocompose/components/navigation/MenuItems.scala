@@ -7,9 +7,12 @@ import cats.Show
 import cats.syntax.all.*
 import com.raquo.laminar.api.L.{ *, given }
 import utils.{ HasHierarchy, Tree }
+import com.raquo.airstream.core.EventStream
+import com.khanr1.cryocompose.wiring.rf.RfAssembly
+import com.khanr1.cryocompose.wiring.rf.RfConnector
 
-def menuItems[ID](
-  trees: List[Tree[ID, Category[ID]]],
+def menuItems[ProductID, RfConnectorID, CategoryID, TagID](
+  trees: List[Tree[CategoryID, Category[CategoryID]]],
   linkID: Var[String],
 ) =
   ul(
