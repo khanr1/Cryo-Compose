@@ -5,6 +5,7 @@ import io.github.iltotore.iron.autoRefine
 import com.khanr1.cryocompose.wiring.rf.*
 import com.khanr1.cryocompose.wiring.*
 import squants.time.Gigahertz
+import com.khanr1.cryocompose.stages.SetStageLength
 
 object InitialState:
   val tagState: Vector[Tag[Int]] = Vector(
@@ -61,6 +62,26 @@ object InitialState:
       )
     )
 
-  val rfSetState: Vector[RfSet[Int, Int, Int, Int]] = Vector(
-    RfSet(1, rfAssemblyState.filter(x => (x.id == 10) || (x.id == 2)).toList, 2, Set(1, 2))
-  )
+  val rfSetState: Vector[RfSet[Int, Int, Int, Int]] =
+    // we first get all the setstageLength
+    val stageSetLengths = SetStageLength.values.toVector
+    // then we get all the stageLenght from each Stage
+    val StageLengths = stageSetLengths.map(_.segments)
+    // then for each we look at the RF assembly that are compatible with this stage length for each
+    def mapStageLengthsToRFAssemblies(
+      material: RFmaterial
+    ) =
+      StageLengths.map { stageLengths =>
+        stageLengths.flatMap { stageLength =>
+          rfAssemblyState.filter(rfAssembly =>
+            rfAssembly.line.wire.length == stageLength && rfAssembly.line.wire.material == material
+          )
+        }
+      }
+    val listRfAssemblies = RFmaterial
+      .values
+      .toList
+      .flatMap(mapStageLengthsToRFAssemblies(_))
+      .filterNot(_.isEmpty)
+
+    listRfAssemblies.map(x => RfSet(listRfAssemblies.indexOf(x) + 1, x, 2, Set(1, 2))).toVector

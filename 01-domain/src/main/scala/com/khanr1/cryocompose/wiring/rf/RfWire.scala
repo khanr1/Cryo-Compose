@@ -5,7 +5,8 @@ package rf
 
 import cats.Show
 import squants.space.Length
-
+import cryocompose.stages.*
+import stages.StageLength
 /** A final case class representing an RF wire used in electrical connections.
   *
   * This class models an RF wire with specified material and length. The length can either be a direct
@@ -37,7 +38,7 @@ final case class RfWire(material: RFmaterial, length: Length | StageLength)
   def description: String =
     val lengthDescription = length match
       case x: Length => x.value.show
-      case x: StageLength => x.show
+      case x: StageLength => x.description
     material.show + " " + lengthDescription
 
 object RfWire:
@@ -53,7 +54,7 @@ object RfWire:
       length <- StageLength.values.toSet
       material <- RFmaterial.values.toSet
     yield RfWire(material, length)
-
+    // TODO Write this filtering bettgin
     all
       .filterNot(rfwire =>
         rfwire.material == RFmaterial.NbTi_086 && rfwire.length.toString().contains("50K")

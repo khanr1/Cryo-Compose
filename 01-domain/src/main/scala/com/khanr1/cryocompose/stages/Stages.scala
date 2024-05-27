@@ -9,7 +9,14 @@ import io.circe.Decoder.Result
 import io.circe.DecodingFailure
 
 enum Stages:
-  case RF_SL
+  def isRT = this match
+    case RT_SL => true
+    case RT_ISO100 => true
+    case RT_K63 => true
+    case RT_KF40 => true
+    case _ => false
+
+  case RT_SL
   case RT_ISO100
   case RT_K63
   case RT_KF40
@@ -17,23 +24,23 @@ enum Stages:
   case `4K`
   case Still
   case CP
-  case CP_SD
-  case CP_XLD_SL
   case MXC
 
 object Stages:
+
+  // define the Stages that are the one defining the different stage in a Cryostat
+  def referenceStages: List[Stages] =
+    List(RT_SL, RT_ISO100, RT_K63, RT_KF40, Stages.`4K`, Stages.Still, Stages.MXC)
   given show: Show[Stages] = Show.show(s =>
     s match
-      case RT_KF40 => "RF (KF40)"
-      case RT_K63 => "RF (K63)"
-      case RT_ISO100 => "RF (ISO100)"
-      case RF_SL => "RF (SL)"
+      case RT_SL => "RT(SL)"
+      case RT_ISO100 => "RT(ISO100)"
+      case RT_K63 => "RT(K63)"
+      case RT_KF40 => "RT(KF40)"
       case `50K` => "50K"
       case `4K` => "4K"
       case Still => "Still"
       case CP => "CP"
-      case CP_SD => "CP (SD)"
-      case CP_XLD_SL => "CP (XLD-SL)"
       case MXC => "MXC"
   )
 
@@ -45,16 +52,14 @@ object Stages:
       for
         stringValue <- c.as[String]
         stage <- stringValue match
-          case "RF (KF40)" => Right(Stages.RT_KF40)
-          case "RF (K63)" => Right(Stages.RT_K63)
-          case "RF (ISO100)" => Right(Stages.RT_ISO100)
-          case "RF (SL)" => Right(Stages.RF_SL)
+          case "RT (KF40)" => Right(Stages.RT_KF40)
+          case "RT (K63)" => Right(Stages.RT_K63)
+          case "RT (ISO100)" => Right(Stages.RT_ISO100)
+          case "RT (SL)" => Right(Stages.RT_SL)
           case "50K" => Right(Stages.`50K`)
           case "4K" => Right(Stages.`4K`)
           case "Still" => Right(Stages.Still)
           case "CP" => Right(Stages.CP)
-          case "CP (SD)" => Right(Stages.CP_SD)
-          case "CP (XLD-SL)" => Right(Stages.CP_XLD_SL)
           case "MXC" => Right(Stages.MXC)
           case other => Left(DecodingFailure(s"Invalid stage: $other", c.history))
       yield stage
@@ -63,7 +68,7 @@ object Stages:
     def compare(x: Stages, y: Stages): Int =
       import Stages.*
       val order = Map(
-        RF_SL -> 0,
+        RT_SL -> 0,
         RT_ISO100 -> 1,
         RT_K63 -> 2,
         RT_KF40 -> 3,
@@ -71,8 +76,6 @@ object Stages:
         `4K` -> 5,
         Still -> 6,
         CP -> 7,
-        CP_SD -> 8,
-        CP_XLD_SL -> 9,
-        MXC -> 10,
+        MXC -> 8,
       )
       order(x) compare order(y)

@@ -10,6 +10,8 @@ import io.circe.HCursor
 import io.circe.DecodingFailure
 import squants.space.Millimeters
 import cats.Show
+import cryocompose.stages.*
+import stages.StageLength
 
 trait Material
 
@@ -36,7 +38,7 @@ given decoder: Decoder[Length | StageLength] = new Decoder[Length | StageLength]
 given show: Show[Length | StageLength] = Show.show(s =>
   s match
     case x: Length => x.toString
-    case y: StageLength => y.toString().replace("_", "-")
+    case y: StageLength => y.show
 )
 
 given Ordering[Length | StageLength] with

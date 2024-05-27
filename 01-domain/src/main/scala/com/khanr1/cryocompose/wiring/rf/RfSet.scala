@@ -47,7 +47,8 @@ final case class RfSet[RfAssemblyID, RfConnectorID, CategoryID, TagID](
     .mkString("\n")
 
   /** The product code for the RF set. */
-  override val code: ProductCode = ProductCode.applyUnsafe(connectorCode + lineCode + lengthCode)
+  override val code: ProductCode =
+    ProductCode.applyUnsafe(connectorCode + "-" + lineCode + "-" + lengthCode)
 
   /** The product description for the RF set. */
   override val productDescription: ProductDescription =

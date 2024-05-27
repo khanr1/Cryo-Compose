@@ -34,6 +34,7 @@ def tableRow[ProductID, CategoryID, TagID](
       aria.hidden := true,
       div(
         cls := "modal-dialog",
+        cls := "modal-lg",
         div(
           cls := "modal-content",
           div(
@@ -52,7 +53,7 @@ def tableRow[ProductID, CategoryID, TagID](
           ),
           div(
             cls := "modal-body",
-            pre(cls := "text-wrap", child.text <-- signal.map(_.productDescription.value)),
+            pre(child.text <-- signal.map(_.productDescription.value)),
           ),
           div(
             cls := "modal-footer",
