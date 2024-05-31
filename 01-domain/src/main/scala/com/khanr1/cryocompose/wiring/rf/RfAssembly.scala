@@ -45,7 +45,10 @@ final case class RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](
 
   override val productName: ProductName =
     val text = connectors.distinct.map(_.name).mkString("", "-", " ") +
-      line.wire.material.show + s" semi-rigid coaxial line ${line.wire.length.show}"
+      line
+        .wire
+        .material
+        .show + s" semi-rigid coaxial line ${line.wire.stageLength.get.show}"
     ProductName.applyUnsafe(text)
 
   override val categoryID: CategoryID = category

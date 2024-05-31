@@ -33,18 +33,21 @@ final case class RfSet[RfAssemblyID, RfConnectorID, CategoryID, TagID](
   /** The code representing the wire material of the first RF assembly in the set. */
   val lineCode: String = rfAssemblies.head.line.wire.material.toString
 
+  /** the description of the lines */
+  val lineDescription: String = rfAssemblies.head.line.wire.description
+
   /** The code representing the unique lengths of wires in the RF set. */
   val lengthCode: String =
-    val list = rfAssemblies.map(_.line.wire.length).sorted
+    val list = rfAssemblies.map(_.line.wire.stageLength.get).sorted
     val occurrences = list.groupBy(identity).view.mapValues(_.size).toMap
     val uniqueElements = list.filter(element => occurrences(element) == 1)
     uniqueElements.mkString("-")
 
   /** The string representation of the RF set elements, sorted by wire length. */
   val setElement: String = rfAssemblies
-    .sortBy(_.line.wire.length)
+    .sortBy(_.line.wire.stageLength.get)
     .map(rfAssembly => rfAssembly.productName.value)
-    .mkString("\n")
+    .mkString("-", "\n-", "")
 
   /** The product code for the RF set. */
   override val code: ProductCode =
@@ -53,12 +56,14 @@ final case class RfSet[RfAssemblyID, RfConnectorID, CategoryID, TagID](
   /** The product description for the RF set. */
   override val productDescription: ProductDescription =
     ProductDescription.applyUnsafe(
-      s"Semi-rigid coaxial line set $connectorCode $lineCode $lengthCode:\n $setElement"
+      s"Semi-rigid coaxial line set $connectorCode $lineCode $lineDescription:\n\n$setElement"
     )
 
   /** The product name for the RF set. */
   override val productName: ProductName =
-    ProductName.applyUnsafe(s"Semi-rigid coaxial line set $connector $lineCode $lengthCode")
+    ProductName.applyUnsafe(
+      s"Semi-rigid coaxial line set $connector $lineDescription ${rfAssemblies.head.line.wire.stageLength.get.show}"
+    )
 
   /** The unique identifier for the RF set. */
   override val productID: RfAssemblyID = id

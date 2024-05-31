@@ -6,6 +6,7 @@ import com.khanr1.cryocompose.wiring.rf.*
 import com.khanr1.cryocompose.wiring.*
 import squants.time.Gigahertz
 import com.khanr1.cryocompose.stages.SetStageLength
+import com.khanr1.cryocompose.stages.StageLength
 
 object InitialState:
   val tagState: Vector[Tag[Int]] = Vector(
@@ -41,16 +42,17 @@ object InitialState:
   ).sortBy(_.name.toString()).reverse
 
   val rfConnectorState: Vector[RfConnector[Int, Int, Int]] = Vector(
-    RfConnector(1, ConnectorName("SMA"), Gender.Female, Gigahertz(18), 2, Set(2))
+    RfConnector(1, ConnectorName("SMA"), Gender.Female, Gigahertz(18), 2, Set(2)),
+    RfConnector(2, ConnectorName("K"), Gender.Female, Gigahertz(40), 2, Set(2)),
   )
 
   val rfAssemblyState: Vector[RfAssembly[Int, Int, Int, Int]] =
     val rfWires = RfWire.generateAll
     val rfLine = (for
-      wire <- rfWires.toVector
       connectorA <- rfConnectorState
-      connectorB <- rfConnectorState
-    yield RfLine(connectorA, connectorB, wire)).distinct
+      wire <- rfWires.toVector.sortBy(_.stageLength.get)
+    // connectorB <- rfConnectorState
+    yield RfLine(connectorA, connectorA, wire)).distinct
 
     rfLine.map(line =>
       RfAssembly(
@@ -64,24 +66,25 @@ object InitialState:
 
   val rfSetState: Vector[RfSet[Int, Int, Int, Int]] =
     // we first get all the setstageLength
-    val stageSetLengths = SetStageLength.values.toVector
-    // then we get all the stageLenght from each Stage
-    val StageLengths = stageSetLengths.map(_.segments)
-    // then for each we look at the RF assembly that are compatible with this stage length for each
-    def mapStageLengthsToRFAssemblies(
-      material: RFmaterial
-    ) =
-      StageLengths.map { stageLengths =>
-        stageLengths.flatMap { stageLength =>
-          rfAssemblyState.filter(rfAssembly =>
-            rfAssembly.line.wire.length == stageLength && rfAssembly.line.wire.material == material
-          )
-        }
-      }
-    val listRfAssemblies = RFmaterial
-      .values
-      .toList
-      .flatMap(mapStageLengthsToRFAssemblies(_))
-      .filterNot(_.isEmpty)
+    def findRFSet(
+      setstage: SetStageLength,
+      rfMaterial: RFmaterial,
+      rfConnector: ConnectorName,
+    ): List[RfAssembly[Int, Int, Int, Int]] =
+      val listStage: List[StageLength] = setstage.segments
 
-    listRfAssemblies.map(x => RfSet(listRfAssemblies.indexOf(x) + 1, x, 2, Set(1, 2))).toVector
+      listStage.flatMap(l =>
+        rfAssemblyState
+          .toList
+          .filter(as => as.line.wire.material == rfMaterial)
+          .filter(as => as.line.connectorA.name == rfConnector)
+          .filter(as => as.line.wire.stageLength == Some(l))
+      )
+
+    val rfassemblies = (for
+      material <- RFmaterial.values.toVector
+      setstage <- SetStageLength.values.toVector
+      connector <- rfConnectorState.map(_.name)
+    yield findRFSet(setstage, material, connector)).filterNot(_.isEmpty)
+
+    rfassemblies.map(line => RfSet(rfassemblies.indexOf(line) + 1, line, 2, Set(1, 2)))

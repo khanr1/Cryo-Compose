@@ -4,6 +4,8 @@ package stages
 
 import cats.Show
 import io.circe.*
+import com.khanr1.cryocompose.wiring.rf.RFmaterial
+import squants.space.Length
 
 enum StageLength(fromStage: Stages, toStage: Stages):
   val from = this.fromStage
@@ -17,7 +19,7 @@ enum StageLength(fromStage: Stages, toStage: Stages):
     case `50K_4K` => true
     case _ => false
 
-  def StageLengthCode: String = this.toString()
+  def code: String = this.toString()
 
   def description: String = s"from ${this.from.show} to ${this.to.show} "
 
@@ -81,3 +83,26 @@ object StageLength:
         CP_MXC -> 9,
       )
       order(x) compare order(y)
+
+def rfStageLength: Map[(StageLength, RFmaterial), Length] = Map(
+  (StageLength.RT_SL_50K, RFmaterial.SCuNi_086) -> Millimeters(290),
+  (StageLength.RT_SL_50K, RFmaterial.SCuNi_219) -> Millimeters(245),
+  (StageLength.RT_ISO100_50K, RFmaterial.SCuNi_086) -> Millimeters(290),
+  (StageLength.RT_ISO100_50K, RFmaterial.SCuNi_219) -> Millimeters(245),
+  (StageLength.RT_K63_50K, RFmaterial.SCuNi_086) -> Millimeters(275),
+  (StageLength.RT_K63_50K, RFmaterial.SCuNi_219) -> Millimeters(245),
+  (StageLength.RT_KF40_50K, RFmaterial.SCuNi_086) -> Millimeters(330),
+  (StageLength.RT_KF40_50K, RFmaterial.SCuNi_219) -> Millimeters(300),
+  (StageLength.`50K_4K`, RFmaterial.SCuNi_086) -> Millimeters(355),
+  (StageLength.`50K_4K`, RFmaterial.SCuNi_219) -> Millimeters(330),
+  (StageLength.`4K_Still`, RFmaterial.SCuNi_086) -> Millimeters(275),
+  (StageLength.`4K_Still`, RFmaterial.NbTi_086) -> Millimeters(275),
+  (StageLength.Still_CP, RFmaterial.SCuNi_086) -> Millimeters(160),
+  (StageLength.Still_CP, RFmaterial.NbTi_086) -> Millimeters(160),
+  (StageLength.Still_CP_SL, RFmaterial.SCuNi_086) -> Millimeters(230),
+  (StageLength.Still_CP_SL, RFmaterial.NbTi_086) -> Millimeters(230),
+  (StageLength.Still_MXC_SD, RFmaterial.SCuNi_086) -> Millimeters(275),
+  (StageLength.Still_MXC_SD, RFmaterial.NbTi_086) -> Millimeters(275),
+  (StageLength.CP_MXC, RFmaterial.SCuNi_086) -> Millimeters(230),
+  (StageLength.CP_MXC, RFmaterial.NbTi_086) -> Millimeters(230),
+)
