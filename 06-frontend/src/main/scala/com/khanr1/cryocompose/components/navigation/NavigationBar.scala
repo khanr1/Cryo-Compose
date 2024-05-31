@@ -10,9 +10,11 @@ import com.raquo.laminar.keys.AriaAttr
 import utils.{ HasHierarchy, Tree }
 import org.scalajs.dom.HTMLDivElement
 import com.raquo.laminar.nodes.ReactiveHtmlElement
+import com.khanr1.cryocompose.App.productStream
+import com.khanr1.cryocompose.wiring.rf.RfAssembly
 
-def navigationBar[ID](
-  trees: List[Tree[ID, Category[ID]]], // here replace Category[ID] with enty to make tree generic
+def navigationBar[ProductID, RfConnectorID, CategoryID, TagID](
+  trees: List[Tree[CategoryID, Category[CategoryID]]], // here replace Category[ID] with enty to make tree generic
   linkID: Var[String],
 ): ReactiveHtmlElement[HTMLDivElement] =
   div(
