@@ -11,7 +11,7 @@ enum SetStageLength(l: List[StageLength]):
   def from = this.l.head.from
   def to = this.l.last.to
 
-  def setCode = this.toString()
+  def code = this.toString()
 
   def description = s"from ${from.show} to ${to.show}"
 

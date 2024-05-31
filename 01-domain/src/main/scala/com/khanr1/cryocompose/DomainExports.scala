@@ -24,3 +24,7 @@ given Ordering[Length] with
     val yMeters = y.toMeters
     // Compare the values
     xMeters compare yMeters
+
+given lengthDecoder: Decoder[Length] = Decoder.decodeBigDecimal.map(Millimeters.apply(_))
+given lengthEncoder: Encoder[Length] = Encoder.encodeBigDecimal.contramap(_.value)
+given lengthShow: Show[Length] = Show.fromToString

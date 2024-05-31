@@ -36,4 +36,4 @@ object RfAssemblyInMemoryRepository:
     }
 
     override def findAll(): F[Vector[RfAssembly[Int, Int, Int, Int]]] =
-      state.get.map(_.sortBy(_.line.wire.length))
+      state.get.map(_.sortBy(_.line.wire.stageLength))
