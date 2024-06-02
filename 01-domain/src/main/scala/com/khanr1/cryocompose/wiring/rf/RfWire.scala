@@ -23,25 +23,18 @@ final case class RfWire(
   material: RFmaterial,
   length: Length,
   stageLength: Option[StageLength],
-) extends Wire(material, length):
-  val lengthCode = stageLength match
-    case None => length.toString
-    case Some(value) => value.code
-  val lengthDescription = stageLength match
-    case None => length.toString
-    case Some(value) => value.description
-
-  /** Generates a unique code for the RF wire by combining its material and length description.
-    *
-    * @return A string representing the code of the RF wire.
-    */
-  def code: String = material.toString() + "-" + lengthCode
+) extends Wire:
+  override def wireCode: String = stageLength match
+    case None => super.wireCode
+    case Some(value) => s"${material.code}-${value.code}"
 
   /** Provides a detailed description of the RF wire, including its material and length.
     *
     * @return A string describing the RF wire.
     */
-  def description: String = material.show + " " + lengthDescription
+  def description: String = stageLength match
+    case None => s"${material.show} with length ${length.toString}"
+    case Some(value) => s"${material.show} ${value.description}"
 
 object RfWire:
   /** Generates all possible RF wires with all the staged lengths.

@@ -27,16 +27,17 @@ import io.github.iltotore.iron.circe.given
   */
 final case class RfConnector[RfConnectorID, CategoryID, TagID](
   id: RfConnectorID,
-  name: ConnectorName,
+  connectorName: ConnectorName,
   gender: Gender,
   maxFrequency: Frequency,
   category: CategoryID,
   tags: Set[TagID],
-) extends Connector(name, gender, numberPin = NumberOfPin(1))
+) extends Connector
        with Product[RfConnectorID, CategoryID, TagID]:
-  override val productName = ProductName.applyUnsafe(name.value)
-  override val productDescription = ProductDescription.applyUnsafe(name.value)
-  override val code = ProductCode.applyUnsafe(name.value)
+  override val numberPin = NumberOfPin(1)
+  override val productName = ProductName.applyUnsafe(connectorName.value)
+  override val productDescription = ProductDescription.applyUnsafe(connectorName.value)
+  override val code = ProductCode.applyUnsafe(connectorCode)
   override val productID = id
   override val categoryID = category
   override val tagsID = tags
@@ -58,7 +59,7 @@ object RfConnector:
   given encoder[RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
     : Encoder[RfConnector[RfConnectorID, CategoryID, TagID]] =
     Encoder.forProduct6("id", "name", "gender", "max frequency", "category", "tags")(r =>
-      (r.id, r.name, r.gender, r.maxFrequency, r.category, r.tags)
+      (r.id, r.connectorName, r.gender, r.maxFrequency, r.category, r.tags)
     )
 
   /** Decoder instance for RfConnector. */
@@ -79,7 +80,7 @@ object RfConnector:
   * @tparam TagID the type of the identifier for tags.
   */
 final case class RfConnectorParam[CategoryID, TagID](
-  name: ConnectorName,
+  connectorName: ConnectorName,
   gender: Gender,
   maxFrequency: Frequency,
   category: CategoryID,
@@ -96,7 +97,7 @@ object RfConnectorParam:
   /** Encoder instance for RfConnectorParam. */
   given encoder[CategoryID: Encoder, TagID: Encoder]: Encoder[RfConnectorParam[CategoryID, TagID]] =
     Encoder.forProduct5("name", "gender", "max frequency", "category", "tags")(r =>
-      (r.name, r.gender, r.maxFrequency, r.category, r.tags)
+      (r.connectorName, r.gender, r.maxFrequency, r.category, r.tags)
     )
 
   /** Decoder instance for RfConnectorParam. */

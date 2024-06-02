@@ -13,4 +13,8 @@ trait Material
   *               If specified as a direct length, it should be of type [[Length]], whereas if specified as a stage length,
   *               it should be of type [[StageLength]].
   */
-trait Wire(material: Material, length: Length)
+trait Wire:
+  val material: Material
+  val length: Length
+
+  def wireCode = s"${material.toString()}-${length}"
