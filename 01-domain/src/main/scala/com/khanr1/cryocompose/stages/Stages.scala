@@ -8,6 +8,9 @@ import io.circe.HCursor
 import io.circe.Decoder.Result
 import io.circe.DecodingFailure
 
+/** Enumerate all the stages that are in a dilution fridge.
+  */
+
 enum Stages:
   def isRT = this match
     case RT_SL => true
