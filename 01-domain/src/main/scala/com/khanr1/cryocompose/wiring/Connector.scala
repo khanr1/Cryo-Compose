@@ -17,11 +17,11 @@ import monocle.Iso
   * @param numberPin
   *   The number of pins in the connector.
   */
-trait Connector(
-  ConnectorName: ConnectorName,
-  gender: Gender,
-  numberPin: NumberOfPin,
-)
+trait Connector:
+  val connectorName: ConnectorName
+  val gender: Gender
+  val numberPin: NumberOfPin
+  def connectorCode = s"${connectorName.show}|${gender.show.head}"
 
 /** Represents the name of a connector, constrained to not be an empty string.
   */

@@ -4,6 +4,7 @@ package wiring
 package rf
 
 import cats.Show
+import com.khanr1.cryocompose.stages.SetStageLength
 
 /** A final case class representing a set of RF assemblies.
   *
@@ -25,23 +26,23 @@ final case class RfSet[RfAssemblyID, RfConnectorID, CategoryID, TagID](
 ) extends Product[RfAssemblyID, CategoryID, TagID]:
 
   /** The code representing the connectors in the RF set. */
-  val connectorCode: String = rfAssemblies.head.connectors.map(_.name).mkString("-")
+  val connectorCode: String = rfAssemblies.head.connectors.map(_.connectorName).mkString("-")
 
   /** A string representation of the distinct connectors' names in the RF set. */
-  val connector: String = rfAssemblies.head.connectors.distinct.map(_.name).mkString("-")
+  val connector: String = rfAssemblies.head.connectors.distinct.map(_.connectorName).mkString("-")
 
   /** The code representing the wire material of the first RF assembly in the set. */
   val lineCode: String = rfAssemblies.head.line.wire.material.toString
 
   /** the description of the lines */
-  val lineDescription: String = rfAssemblies.head.line.wire.description
+  val lineDescription: String =
+    val list = rfAssemblies.map(_.line.wire.stageLength.get).sorted
+    SetStageLength.getSetStageLength(list).fold("")(_.show)
 
   /** The code representing the unique lengths of wires in the RF set. */
   val lengthCode: String =
     val list = rfAssemblies.map(_.line.wire.stageLength.get).sorted
-    val occurrences = list.groupBy(identity).view.mapValues(_.size).toMap
-    val uniqueElements = list.filter(element => occurrences(element) == 1)
-    uniqueElements.mkString("-")
+    SetStageLength.getSetStageLength(list).fold("")(_.code)
 
   /** The string representation of the RF set elements, sorted by wire length. */
   val setElement: String = rfAssemblies
@@ -62,7 +63,7 @@ final case class RfSet[RfAssemblyID, RfConnectorID, CategoryID, TagID](
   /** The product name for the RF set. */
   override val productName: ProductName =
     ProductName.applyUnsafe(
-      s"Semi-rigid coaxial line set $connector $lineDescription ${rfAssemblies.head.line.wire.stageLength.get.show}"
+      s"Semi-rigid coaxial line set $connector $lineDescription"
     )
 
   /** The unique identifier for the RF set. */

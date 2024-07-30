@@ -77,14 +77,14 @@ object InitialState:
         rfAssemblyState
           .toList
           .filter(as => as.line.wire.material == rfMaterial)
-          .filter(as => as.line.connectorA.name == rfConnector)
+          .filter(as => as.line.connectorA.connectorName == rfConnector)
           .filter(as => as.line.wire.stageLength == Some(l))
       )
 
     val rfassemblies = (for
       material <- RFmaterial.values.toVector
       setstage <- SetStageLength.values.toVector
-      connector <- rfConnectorState.map(_.name)
+      connector <- rfConnectorState.map(_.connectorName)
     yield findRFSet(setstage, material, connector)).filterNot(_.isEmpty)
 
     rfassemblies.map(line => RfSet(rfassemblies.indexOf(line) + 1, line, 2, Set(1, 2)))

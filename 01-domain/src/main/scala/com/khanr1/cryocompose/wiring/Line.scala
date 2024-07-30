@@ -13,11 +13,12 @@ import io.github.iltotore.iron.constraint.all.*
   * @param wire
   *   The wire used for the connection.
   */
-trait Line(
-  from: (Connector, PinIndex),
-  to: (Connector, PinIndex),
-  wire: Wire,
-)
+trait Line:
+  val from: (Connector, PinIndex)
+  val to: (Connector, PinIndex)
+  val wire: Wire
+
+  def lineCode: String = s"${from._1.connectorCode}-${to._1.connectorCode}-${wire.wireCode}"
 
 /** Represents the index of a pin, constrained to be a positive integer.
   */

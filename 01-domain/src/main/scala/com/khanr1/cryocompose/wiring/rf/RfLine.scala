@@ -21,11 +21,9 @@ final case class RfLine[RfConnectorID, CategoryID, TagID](
   connectorA: RfConnector[RfConnectorID, CategoryID, TagID],
   connectorB: RfConnector[RfConnectorID, CategoryID, TagID],
   wire: RfWire,
-) extends Line(
-      from = (connectorA, PinIndex(1)),
-      to = (connectorB, PinIndex(1)),
-      wire,
-    )
+) extends Line:
+  override val from = (connectorA, PinIndex(1))
+  override val to = (connectorB, PinIndex(1))
 
 object RfLine:
   /** Show instance for RfLine, using the default toString representation. */

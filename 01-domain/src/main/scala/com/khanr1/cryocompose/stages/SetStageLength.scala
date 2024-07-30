@@ -11,7 +11,15 @@ enum SetStageLength(l: List[StageLength]):
   def from = this.l.head.from
   def to = this.l.last.to
 
-  def code = this.toString()
+  def code = this match
+    case RT_SL_4K => "RT_SL_4K"
+    case RT_ISO100_4K => "RT_ISO100_4K"
+    case RT_K63_4K => "RT_K63_4K "
+    case RT_KF40_4K => "RT_KF40_4K"
+    case `4K_Still` => "`4K_Still`"
+    case Still_MXC_SD => "Still_MXC_SD"
+    case Still_MXC_SL => "Still_MXC_SL"
+    case Still_MXC_STD => "Still_MXC_STD"
 
   def description = s"from ${from.show} to ${to.show}"
 

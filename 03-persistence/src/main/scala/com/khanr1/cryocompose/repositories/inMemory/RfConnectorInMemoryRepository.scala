@@ -20,7 +20,7 @@ object RfConnectorInMemoryRepository:
         .map(
           RfConnector(
             _,
-            connector.name,
+            connector.connectorName,
             connector.gender,
             connector.maxFrequency,
             connector.category,
