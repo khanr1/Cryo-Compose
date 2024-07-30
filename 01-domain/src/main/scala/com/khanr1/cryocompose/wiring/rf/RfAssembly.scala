@@ -32,7 +32,7 @@ final case class RfAssembly[RfAssemblyID, RfConnectorID, CategoryID, TagID](
        with Product[RfAssemblyID, CategoryID, TagID]:
   override val lines = List(line)
   override val code: ProductCode =
-    ProductCode.applyUnsafe(line.lineCode)
+    ProductCode.applyUnsafe(wiringCode)
 
   override val productDescription: ProductDescription =
     val text =

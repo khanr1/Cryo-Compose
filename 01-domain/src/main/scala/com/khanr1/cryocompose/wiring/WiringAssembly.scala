@@ -12,6 +12,5 @@ trait WiringAssembly:
   val lines: List[Line]
 
   def wiringCode =
-    def connectorsCode = connectors.map(_.connectorCode)
-    def linesCode = lines.map(_.lineCode)
-    s"$connectorsCode-$linesCode"
+    def linesCode = lines.map(_.lineCode).distinct.mkString("")
+    s"$linesCode"
