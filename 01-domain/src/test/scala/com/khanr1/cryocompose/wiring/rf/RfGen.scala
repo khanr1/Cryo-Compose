@@ -17,3 +17,13 @@ def rfConnectorGen[A: Arbitrary, B: Arbitrary, C: Arbitrary]: Gen[RfConnector[A,
     categoryID <- Arbitrary.arbitrary[B]
     tags <- Gen.listOf(Arbitrary.arbitrary[C])
   yield RfConnector[A, B, C](id, name, gender, Gigahertz(f), categoryID, Set.from(tags))
+
+def RfBulkheadGen[A: Arbitrary, B: Arbitrary, C: Arbitrary]: Gen[RfBulkhead[A, B, C]] =
+  for
+    id <- Arbitrary.arbitrary[A]
+    connector <- rfConnectorGen[A, B, C]
+    length <- lengthGenInmm
+    isHermetic <- Gen.oneOf(Hermeticity.values)
+    category <- Arbitrary.arbitrary[B]
+    tags <- Gen.listOf(Arbitrary.arbitrary[C])
+  yield RfBulkhead[A, B, C](id, connector, length, isHermetic, category, Set.from(tags))

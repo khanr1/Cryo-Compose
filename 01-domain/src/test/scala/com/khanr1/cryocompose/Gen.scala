@@ -41,3 +41,5 @@ def categoryGen[A: Arbitrary]: Gen[Category[A]] = for
   description <- categoryDescriptionGen
   b <- Arbitrary.arbitrary[A]
 yield Category(a, name, description, Some(b))
+
+val lengthGenInmm: Gen[Length] = Gen.posNum[Int].flatMap(Millimeters(_))
