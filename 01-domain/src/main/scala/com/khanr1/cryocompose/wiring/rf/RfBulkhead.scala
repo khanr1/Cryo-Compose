@@ -50,3 +50,38 @@ object RfBulkhead:
     Encoder.forProduct6("id", "connector", "length", "isHermetic", "category", "tags")(blk =>
       (blk.id, blk.connector, blk.length, blk.isHermetic, blk.category, blk.tags)
     )
+
+final case class RfBulkheadParam[RfConnectorID, CategoryID, TagID](
+  connector: RfConnector[RfConnectorID, CategoryID, TagID],
+  length: Length,
+  isHermetic: Hermeticity,
+  category: CategoryID,
+  tags: Set[TagID],
+) extends Bulkhead
+
+object RfBulkheadParam:
+  /** Show instance for RfBulkhead, using the default toString representation. */
+  given show[RfConnectorID, CategoryID, TagID](
+    using
+    a: Show[CategoryID],
+    b: Show[RfConnectorID],
+    c: Show[TagID],
+  ): Show[RfBulkheadParam[RfConnectorID, CategoryID, TagID]] = Show.fromToString
+
+  /** Eq instance for RfBulkhead, using universal equality. */
+  given eq[RfConnectorID, CategoryID, TagID]
+    : Eq[RfBulkheadParam[RfConnectorID, CategoryID, TagID]] =
+    Eq.fromUniversalEquals
+
+  /** Json Decoder */
+  given decoder[RfConnectorID: Decoder, CategoryID: Decoder, TagID: Decoder]
+    : Decoder[RfBulkheadParam[RfConnectorID, CategoryID, TagID]] =
+    Decoder.forProduct5("connector", "length", "isHermetic", "category", "tags")(
+      RfBulkheadParam[RfConnectorID, CategoryID, TagID](_, _, _, _, _)
+    )
+    /** Json encpder */
+  given encoder[RfConnectorID: Encoder, CategoryID: Encoder, TagID: Encoder]
+    : Encoder[RfBulkheadParam[RfConnectorID, CategoryID, TagID]] =
+    Encoder.forProduct5("connector", "length", "isHermetic", "category", "tags")(blk =>
+      (blk.connector, blk.length, blk.isHermetic, blk.category, blk.tags)
+    )
