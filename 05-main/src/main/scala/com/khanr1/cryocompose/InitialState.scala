@@ -88,3 +88,19 @@ object InitialState:
     yield findRFSet(setstage, material, connector)).filterNot(_.isEmpty)
 
     rfassemblies.map(line => RfSet(rfassemblies.indexOf(line) + 1, line, 2, Set(1, 2)))
+
+  val rfbulkheadState: Vector[RfBulkhead[Int, Int, Int]] =
+    for
+      connector <- rfConnectorState
+      hermetic <- Hermeticity.values
+    yield RfBulkhead(
+      Integer.parseInt(
+        rfConnectorState.indexOf(connector).toString() + Hermeticity.values.indexOf(hermetic) + 1,
+        2,
+      ),
+      connector,
+      Millimeters(10),
+      hermetic,
+      2,
+      Set(2),
+    )
