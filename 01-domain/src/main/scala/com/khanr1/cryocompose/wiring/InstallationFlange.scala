@@ -7,11 +7,13 @@ import cats.Show
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import com.khanr1.cryocompose.ports.Ports
+import com.khanr1.cryocompose.stages.Stages
 
 /** Installation flange are installed in a K40 flange. */
 
 trait InstallationFlange:
-  val size: Ports
+  val port: Ports
+  val stage: Stages
   val numberSlot: NumberOfSlot
 
 type NumberOfSlotR =
