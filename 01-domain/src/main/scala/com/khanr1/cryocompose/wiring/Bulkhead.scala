@@ -16,20 +16,20 @@ trait Bulkhead:
 
 enum Hermeticity:
   case Hermetic
-  case NonHermectic
+  case NonHermetic
 
 object Hermeticity:
   given iso: Iso[Hermeticity, Boolean] = Iso[Hermeticity, Boolean] {
     case Hermetic => true
-    case NonHermectic => false
-  }(if _ then Hermetic else NonHermectic)
+    case NonHermetic => false
+  }(if _ then Hermetic else NonHermetic)
 
   given encoder: Encoder[Hermeticity] = Encoder
     .encodeString
     .contramap(h =>
       h match
         case Hermetic => "Hermetic"
-        case NonHermectic => "NonHermetic"
+        case NonHermetic => "NonHermetic"
     )
 
   given show: Show[Hermeticity] = Show.fromToString

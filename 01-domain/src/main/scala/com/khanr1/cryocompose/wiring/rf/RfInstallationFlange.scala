@@ -17,10 +17,10 @@ final case class RfInstallationFlange[RfConnectorID, FlangeID, CategoryID, TagID
   tagsID: Set[TagID],
 ) extends InstallationFlange
        with Product[FlangeID, CategoryID, TagID]:
-  override val numberSlot: NumberOfSlot = NumberOfSlot.applyUnsafe(bulkheads.length)
+  override val numberSlot: NumberOfSlot = NumberOfSlot.applyUnsafe(bulkheads.size)
   override val code: ProductCode =
     ProductCode.assume(
-      s"${bulkheads.map(_.connector.connectorName).distinct.mkString("", "|", "")} $port RF-INST"
+      s" RF-INST $numberSlot $port ${bulkheads.map(_.connector.connectorName).distinct.mkString("", "|", "")} $stage"
     )
 
   override val productName: ProductName = ProductName.assume(
@@ -67,7 +67,7 @@ final case class RfInstallationFlangeParam[RfConnectorID, CategoryID, TagID](
 object RfInstallationFlangeParam:
   given show[RfConnectorID, CategoryID, TagID]
     : Show[RfInstallationFlangeParam[RfConnectorID, CategoryID, TagID]] = Show.fromToString
-  given decoder[RfConnectorID: Decoder, FlangeID: Decoder, CategoryID: Decoder, TagID: Decoder]
+  given decoder[RfConnectorID: Decoder, CategoryID: Decoder, TagID: Decoder]
     : Decoder[RfInstallationFlangeParam[RfConnectorID, CategoryID, TagID]] =
     Decoder.forProduct5("port", "bulkheads", "stage", "category", "tags")(
       RfInstallationFlangeParam[RfConnectorID, CategoryID, TagID](_, _, _, _, _)

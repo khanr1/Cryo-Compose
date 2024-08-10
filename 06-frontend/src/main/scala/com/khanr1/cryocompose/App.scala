@@ -26,12 +26,12 @@ object App:
       x match
         case "RF Wiring" => fetchedRfAssembly
         case "RF Sets" => fetchedRfSet
+        case "RF Flanges" => fetchedRfFlange
+        case "RF Bulkheads" => fetchedRfBulkhead
         case _ => EventStream.fromValue(Nil)
     )
 
-  val ps = fetchedRfSet
-
-  // new EventBus[List[Product[Int, Int, Int]]]
+  // val ps = fetchedRfFlange
 
   def main(args: Array[String]): Unit =
     render(

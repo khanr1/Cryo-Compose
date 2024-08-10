@@ -7,6 +7,8 @@ import com.khanr1.cryocompose.wiring.*
 import squants.time.Gigahertz
 import com.khanr1.cryocompose.stages.SetStageLength
 import com.khanr1.cryocompose.stages.StageLength
+import com.khanr1.cryocompose.stages.Stages
+import com.khanr1.cryocompose.ports.Ports
 
 object InitialState:
   val tagState: Vector[Tag[Int]] = Vector(
@@ -37,6 +39,18 @@ object InitialState:
       4,
       CategoryName("RF Sets"),
       CategoryDescription("This category regroup all the RF Sets"),
+      Some(1),
+    ),
+    Category(
+      5,
+      CategoryName("RF Flanges"),
+      CategoryDescription("This category regroup all the RF flanges"),
+      Some(1),
+    ),
+    Category(
+      6,
+      CategoryName("RF Bulkheads"),
+      CategoryDescription("This category regroup all the RF Bulkheads"),
       Some(1),
     ),
   ).sortBy(_.name.toString()).reverse
@@ -104,3 +118,22 @@ object InitialState:
       2,
       Set(2),
     )
+
+  val rfFlangeState: Vector[RfInstallationFlange[Int, Int, Int, Int]] =
+    val states = (for
+      stage <- Stages.values
+      bulkhead <- rfbulkheadState
+      //port <- Ports.values
+    yield RfInstallationFlange(
+      1,
+      Ports.KF40,
+      List.fill(7)(bulkhead),
+      stage,
+      1,
+      Set(2),
+    )).toVector
+      .filterNot(x => x.stage.isRT && x.bulkheads.head.isHermetic == Hermeticity.NonHermetic)
+      .filterNot(x => !x.stage.isRT && x.bulkheads.head.isHermetic == Hermeticity.Hermetic)
+      .filterNot(x => x.stage.isRT && x.stage!=Stages.RT_KF40)
+
+    states.map(x => x.copy(productID = states.indexOf(x)))

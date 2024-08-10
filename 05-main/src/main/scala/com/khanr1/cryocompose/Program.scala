@@ -20,12 +20,18 @@ object Program:
       rfWire <- Ref.of[F, Vector[RfAssembly[Int, Int, Int, Int]]](InitialState.rfAssemblyState)
       rfSet <- Ref.of[F, Vector[RfSet[Int, Int, Int, Int]]](InitialState.rfSetState)
       rfBulkhead <- Ref.of[F, Vector[RfBulkhead[Int, Int, Int]]](InitialState.rfbulkheadState)
+      rfFlange <- Ref.of[F, Vector[RfInstallationFlange[Int, Int, Int, Int]]](
+        InitialState.rfFlangeState
+      )
       tagController <- TagDependencyGraph.make(tagRef)
       categoryController <- CategoryDependencyGraph.make(catRef)
       rfConnectorController <- RfConnectorDependencyGraph.make(conRef)
       rfAssemblyController <- RfAssemblyDependencyGraph.make(rfWire)
       rfSetController <- RfSetDependencyGraph.make(rfSet)
       rfbulkheadController <- RfBulkheadDependencyGraph.make(rfBulkhead)
+      rfinstallationStageController <- RfInstallationFlangeDependencyGraph.make(
+        rfFlange
+      )
       mainController <- MainDependencyGraph.make
       _ <- HttpServer
         .make(
@@ -36,6 +42,7 @@ object Program:
             categoryController,
             rfSetController,
             rfbulkheadController,
+            rfinstallationStageController,
             mainController,
           )
         )

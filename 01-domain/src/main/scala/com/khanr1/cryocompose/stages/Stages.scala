@@ -36,10 +36,10 @@ object Stages:
     List(RT_SL, RT_ISO100, RT_K63, RT_KF40, Stages.`4K`, Stages.Still, Stages.MXC)
   given show: Show[Stages] = Show.show(s =>
     s match
-      case RT_SL => "RT(SL)"
-      case RT_ISO100 => "RT(ISO100)"
-      case RT_K63 => "RT(K63)"
-      case RT_KF40 => "RT(KF40)"
+      case RT_SL => "RT (SL)"
+      case RT_ISO100 => "RT (ISO100)"
+      case RT_K63 => "RT (K63)"
+      case RT_KF40 => "RT (KF40)"
       case `50K` => "50K"
       case `4K` => "4K"
       case Still => "Still"

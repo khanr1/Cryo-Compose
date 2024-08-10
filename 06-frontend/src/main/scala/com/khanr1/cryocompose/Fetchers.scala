@@ -11,6 +11,10 @@ import org.http4s.*
 import org.http4s.circe.*
 import org.http4s.implicits.*
 import com.raquo.airstream.core
+import com.khanr1.cryocompose.wiring.rf.RfInstallationFlange
+import com.khanr1.cryocompose.ports.Ports
+import com.khanr1.cryocompose.stages.Stages
+import com.khanr1.cryocompose.wiring.rf.RfBulkhead
 
 given entityDecoder: EntityDecoder[IO, List[Category[Int]]] =
   jsonOf
@@ -19,6 +23,12 @@ given rfAssemblyDecoder: EntityDecoder[IO, List[RfAssembly[Int, Int, Int, Int]]]
   jsonOf
 
 given rfSetDecoder: EntityDecoder[IO, List[RfSet[Int, Int, Int, Int]]] =
+  jsonOf
+
+given rfbulkheadDecoder: EntityDecoder[IO, List[RfBulkhead[Int, Int, Int]]] =
+  jsonOf
+
+given rfFlangeDecoder: EntityDecoder[IO, List[RfInstallationFlange[Int, Int, Int, Int]]] =
   jsonOf
 
 def fetchedRfAssembly: core.EventStream[List[RfAssembly[Int, Int, Int, Int]]] = FetchStream
@@ -43,4 +53,22 @@ def fetchedCategory: core.EventStream[List[Category[Int]]] = FetchStream
   .map(data => decode[List[Category[Int]]](data))
   .collect {
     case Right(categories) => categories
+  }
+
+def fetchedRfBulkhead: core.EventStream[List[RfBulkhead[Int, Int, Int]]] = FetchStream
+  .get("http://localhost:8080/rf/rfbulkhead")
+  .map(response => response.text)
+  .map(data => decode[List[RfBulkhead[Int, Int, Int]]](data))
+  .collect {
+    case Right(rfFlange) =>
+      rfFlange
+  }
+
+def fetchedRfFlange: core.EventStream[List[RfInstallationFlange[Int, Int, Int, Int]]] = FetchStream
+  .get("http://localhost:8080/rf/rfflange")
+  .map(response => response.text)
+  .map(data => decode[List[RfInstallationFlange[Int, Int, Int, Int]]](data))
+  .collect {
+    case Right(rfFlange) =>
+      rfFlange
   }
