@@ -35,6 +35,9 @@ enum StageLength(fromStage: Stages, toStage: Stages):
   case CP_MXC extends StageLength(Stages.CP, Stages.MXC)
 
 object StageLength:
+  def getStageLength(stage: (Stages, Stages)): Option[StageLength] =
+    StageLength.values.find(a => (a.from, a.to) == stage)
+
   given show: Show[StageLength] = Show.show(sl =>
     sl match
       case RT_SL_50K => "RT(SL)-50K"

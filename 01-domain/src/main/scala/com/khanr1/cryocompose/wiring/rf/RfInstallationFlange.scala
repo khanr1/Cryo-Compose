@@ -20,18 +20,18 @@ final case class RfInstallationFlange[RfConnectorID, FlangeID, CategoryID, TagID
   override val numberSlot: NumberOfSlot = NumberOfSlot.applyUnsafe(bulkheads.size)
   override val code: ProductCode =
     ProductCode.assume(
-      s" RF-INST $numberSlot $port ${bulkheads.map(_.connector.connectorName).distinct.mkString("", "|", "")} $stage"
+      s" RF-INST-$numberSlot-$port-${bulkheads.map(_.connector.connectorName).distinct.mkString("", "|", "")}-$stage"
     )
 
   override val productName: ProductName = ProductName.assume(
-    s"${bulkheads.map(_.connector.connectorName).distinct.mkString("", "|", "")} $port RF Installation Set "
+    s"RF Installation $stage flange ${bulkheads.map(_.connector.connectorName).distinct.mkString("", "|", "")} $port"
   )
 
   override val productDescription: ProductDescription =
     val bulkheadsDistribution =
       bulkheads.groupBy(_.bulkheadCode).map((x, y) => (x, y.length)).mkString
     ProductDescription.applyUnsafe(
-      s"RF installation set for $port with $bulkheadsDistribution"
+      s"RF installation $stage flange for $port with $bulkheadsDistribution"
     )
 
 object RfInstallationFlange:
