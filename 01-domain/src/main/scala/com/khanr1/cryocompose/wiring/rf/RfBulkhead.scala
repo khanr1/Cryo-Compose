@@ -19,11 +19,13 @@ final case class RfBulkhead[RfConnectorID, CategoryID, TagID](
   override val productID: RfConnectorID = id
   override val code: ProductCode = ProductCode.assume(bulkheadCode)
   override val productDescription: ProductDescription = ProductDescription.assume(
-    s"${connector.connectorName}| ${connector.gender.show} ${isHermetic.show} bulkhead connector"
+    s"${connector.gender.show} ${connector.connectorName.show}  ${isHermetic.show} bulkhead connector"
   )
   override val tagsID: Set[TagID] = tags
   override val productName: ProductName =
-    ProductName.assume(s"${connector.gender.show} ${isHermetic.show} bulkhead connector")
+    ProductName.assume(
+      s"${connector.gender.show} ${connector.connectorName.show}  ${isHermetic.show} bulkhead connector"
+    )
 
 object RfBulkhead:
   /** Show instance for RfBulkhead, using the default toString representation. */

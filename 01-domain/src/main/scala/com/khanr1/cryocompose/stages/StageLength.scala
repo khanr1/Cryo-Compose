@@ -37,6 +37,7 @@ enum StageLength(fromStage: Stages, toStage: Stages):
 object StageLength:
   def getStageLength(stage: (Stages, Stages)): Option[StageLength] =
     StageLength.values.find(a => (a.from, a.to) == stage)
+  def getStageFromStageLength(length: StageLength): List[Stages] = List(length.from, length.to)
 
   given show: Show[StageLength] = Show.show(sl =>
     sl match

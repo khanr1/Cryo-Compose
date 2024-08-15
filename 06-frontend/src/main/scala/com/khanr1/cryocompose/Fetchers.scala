@@ -15,6 +15,7 @@ import com.khanr1.cryocompose.wiring.rf.RfInstallationFlange
 import com.khanr1.cryocompose.ports.Ports
 import com.khanr1.cryocompose.stages.Stages
 import com.khanr1.cryocompose.wiring.rf.RfBulkhead
+import com.khanr1.cryocompose.wiring.rf.RfInstallationSet
 
 given entityDecoder: EntityDecoder[IO, List[Category[Int]]] =
   jsonOf
@@ -30,6 +31,8 @@ given rfbulkheadDecoder: EntityDecoder[IO, List[RfBulkhead[Int, Int, Int]]] =
 
 given rfFlangeDecoder: EntityDecoder[IO, List[RfInstallationFlange[Int, Int, Int, Int]]] =
   jsonOf
+
+given rfInstSetDecoder: EntityDecoder[IO, List[RfInstallationSet[Int, Int, Int, Int]]] = jsonOf
 
 def fetchedRfAssembly: core.EventStream[List[RfAssembly[Int, Int, Int, Int]]] = FetchStream
   .get("http://localhost:8080/rf/rfassembly")
@@ -68,6 +71,15 @@ def fetchedRfFlange: core.EventStream[List[RfInstallationFlange[Int, Int, Int, I
   .get("http://localhost:8080/rf/rfflange")
   .map(response => response.text)
   .map(data => decode[List[RfInstallationFlange[Int, Int, Int, Int]]](data))
+  .collect {
+    case Right(rfFlange) =>
+      rfFlange
+  }
+
+def fetchedRfInstSet: core.EventStream[List[RfInstallationSet[Int, Int, Int, Int]]] = FetchStream
+  .get("http://localhost:8080/rf/rfflangeset")
+  .map(response => response.text)
+  .map(data => decode[List[RfInstallationSet[Int, Int, Int, Int]]](data))
   .collect {
     case Right(rfFlange) =>
       rfFlange

@@ -4,6 +4,9 @@ package wiring.rf
 
 import com.khanr1.cryocompose.stages.StageLength.getStageLength
 import cats.Show
+import com.khanr1.cryocompose.stages.SetStageLength.getSetStageLength
+import com.khanr1.cryocompose.stages.Stages
+import com.khanr1.cryocompose.stages.StageLength
 
 final case class RfInstallationSet[ProductID, FlangeID, CategoryID, TagID](
   productID: ProductID,
@@ -13,24 +16,37 @@ final case class RfInstallationSet[ProductID, FlangeID, CategoryID, TagID](
 ) extends Product[ProductID, CategoryID, TagID]:
   /** The code representing the connectors in the RF set. */
   val connectorCode: String =
-    rfInstallationFlanges.head.bulkheads.map(_.connector.connectorName).mkString("-")
+    rfInstallationFlanges.head.bulkheads.length + "x" + rfInstallationFlanges
+      .head
+      .bulkheads
+      .map(_.connector.connectorName)
+      .head
+      .show
   val portCode: String =
     rfInstallationFlanges.map(_.port).distinct.mkString("-")
-  val lengthCode: String =
+  val lengthCode =
     val liststage = rfInstallationFlanges.sortBy(_.stage).map(_.stage)
-    getStageLength(liststage.head, liststage.last).mkString("->")
+    def getListStageLength(l: List[Stages]): List[StageLength] = l match
+      case x :: y :: tail => getStageLength(x, y).get :: getListStageLength(y :: tail)
+      case x :: tail => Nil
+      case Nil => Nil
+
+    getSetStageLength(getListStageLength(liststage))
+
   /** The string representation of the RF set elements, sorted by wire length. */
   val setElement: String = rfInstallationFlanges
     .sortBy(_.stage)
     .map(rfAssembly => rfAssembly.productName.value)
     .mkString("-", "\n-", "")
   override val code: ProductCode =
-    ProductCode.applyUnsafe(s"RF-INST-SET-$portCode-$connectorCode-$lengthCode")
+    ProductCode.applyUnsafe(s"RF-INST-SET-$portCode-$connectorCode-${lengthCode.mkString("")}")
   override val productDescription: ProductDescription = ProductDescription.applyUnsafe(
-    s"RF Installation set $connectorCode $portCode :\n\n$setElement"
+    s"RF Installation set $connectorCode $portCode ${lengthCode.map(_.description).mkString} :\n\n$setElement"
   )
   override val productName: ProductName =
-    ProductName.applyUnsafe(s"RF installation set $portCode $connectorCode $lengthCode")
+    ProductName.applyUnsafe(
+      s"RF installation set $portCode $connectorCode ${lengthCode.map(_.description).mkString}"
+    )
 
 object RfInstallationSet:
   given show[ProductID, FlangeID, CategoryID, TagID]

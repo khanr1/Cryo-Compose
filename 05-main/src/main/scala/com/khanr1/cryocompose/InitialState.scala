@@ -9,6 +9,7 @@ import com.khanr1.cryocompose.stages.SetStageLength
 import com.khanr1.cryocompose.stages.StageLength
 import com.khanr1.cryocompose.stages.Stages
 import com.khanr1.cryocompose.ports.Ports
+import com.khanr1.cryocompose.stages.SetStageLength.getStageFromSetStageLength
 
 object InitialState:
   val tagState: Vector[Tag[Int]] = Vector(
@@ -51,6 +52,12 @@ object InitialState:
       6,
       CategoryName("RF Bulkheads"),
       CategoryDescription("This category regroup all the RF Bulkheads"),
+      Some(1),
+    ),
+    Category(
+      7,
+      CategoryName("RF Installation Set"),
+      CategoryDescription("This category regroup all the RF installation set"),
       Some(1),
     ),
   ).sortBy(_.name.toString()).reverse
@@ -123,7 +130,7 @@ object InitialState:
     val states = (for
       stage <- Stages.values
       bulkhead <- rfbulkheadState
-      //port <- Ports.values
+    // port <- Ports.values
     yield RfInstallationFlange(
       1,
       Ports.KF40,
@@ -134,6 +141,34 @@ object InitialState:
     )).toVector
       .filterNot(x => x.stage.isRT && x.bulkheads.head.isHermetic == Hermeticity.NonHermetic)
       .filterNot(x => !x.stage.isRT && x.bulkheads.head.isHermetic == Hermeticity.Hermetic)
-      .filterNot(x => x.stage.isRT && x.stage!=Stages.RT_KF40)
+      .filterNot(x => x.stage.isRT && x.stage != Stages.RT_KF40)
+
+    states.map(x => x.copy(productID = states.indexOf(x)))
+
+  val rfInstSetState: Vector[RfInstallationSet[Int, Int, Int, Int]] =
+    def findRFInstallationFlange(l: List[Stages], connector: ConnectorName)
+      : List[RfInstallationFlange[Int, Int, Int, Int]] =
+      l.flatMap(stage =>
+        rfFlangeState
+          .filter(_.bulkheads.head.connector.connectorName == connector)
+          .filter(_.stage == stage)
+      ).toList
+
+    val stageArray = SetStageLength
+      .values
+      .map(getStageFromSetStageLength(_).distinct)
+      .filterNot(_.contains(Stages.RT_SL))
+      .filterNot(_.contains(Stages.RT_ISO100))
+      .filterNot(_.contains(Stages.RT_K63))
+      .toList
+    val states = (for
+      stages <- stageArray
+      connector <- rfConnectorState
+    yield RfInstallationSet[Int, Int, Int, Int](
+      1,
+      findRFInstallationFlange(stages, connector.connectorName),
+      1,
+      Set(1),
+    )).toVector
 
     states.map(x => x.copy(productID = states.indexOf(x)))

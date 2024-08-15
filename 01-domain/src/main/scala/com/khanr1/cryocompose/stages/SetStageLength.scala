@@ -4,6 +4,7 @@ package stages
 
 import cats.Show
 import io.circe.*
+import com.khanr1.cryocompose.stages.StageLength.getStageFromStageLength
 
 enum SetStageLength(l: List[StageLength]):
   def segments = this.l
@@ -64,3 +65,9 @@ object SetStageLength:
 
   def getSetStageLength(stageLengths: List[StageLength]): Option[SetStageLength] =
     SetStageLength.values.find(_.segments == stageLengths)
+
+  def getStageFromSetStageLength(set: SetStageLength): List[Stages] =
+    for
+      stageLengths <- set.segments
+      stage <- getStageFromStageLength(stageLengths)
+    yield stage

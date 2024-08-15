@@ -8,8 +8,7 @@ import com.khanr1.cryocompose.modules.*
 import org.typelevel.log4cats.Logger
 import com.khanr1.cryocompose.wiring.*
 import com.khanr1.cryocompose.wiring.rf.*
-import com.khanr1.cryocompose.InitialState.rfAssemblyState
-import com.khanr1.cryocompose.InitialState.rfbulkheadState
+import com.khanr1.cryocompose.InitialState.*
 
 object Program:
   def make[F[_]: Logger: Async]: F[Unit] =
@@ -23,15 +22,20 @@ object Program:
       rfFlange <- Ref.of[F, Vector[RfInstallationFlange[Int, Int, Int, Int]]](
         InitialState.rfFlangeState
       )
+      rfInstSet <- Ref.of[F, Vector[RfInstallationSet[Int, Int, Int, Int]]](
+        InitialState.rfInstSetState
+      )
       tagController <- TagDependencyGraph.make(tagRef)
       categoryController <- CategoryDependencyGraph.make(catRef)
       rfConnectorController <- RfConnectorDependencyGraph.make(conRef)
       rfAssemblyController <- RfAssemblyDependencyGraph.make(rfWire)
       rfSetController <- RfSetDependencyGraph.make(rfSet)
       rfbulkheadController <- RfBulkheadDependencyGraph.make(rfBulkhead)
-      rfinstallationStageController <- RfInstallationFlangeDependencyGraph.make(
-        rfFlange
+      rfinstflangeController <- RfInstallationFlangeDependencyGraph.make(rfFlange)
+      rfinstsetController <- RfInstallationSetDependencyGraph.make(
+        rfInstSet
       )
+
       mainController <- MainDependencyGraph.make
       _ <- HttpServer
         .make(
@@ -42,7 +46,8 @@ object Program:
             categoryController,
             rfSetController,
             rfbulkheadController,
-            rfinstallationStageController,
+            rfinstflangeController,
+            rfinstsetController,
             mainController,
           )
         )

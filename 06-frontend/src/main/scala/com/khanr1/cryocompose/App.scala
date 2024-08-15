@@ -28,6 +28,7 @@ object App:
         case "RF Sets" => fetchedRfSet
         case "RF Flanges" => fetchedRfFlange
         case "RF Bulkheads" => fetchedRfBulkhead
+        case "RF Installation Set" => fetchedRfInstSet
         case _ => EventStream.fromValue(Nil)
     )
 
